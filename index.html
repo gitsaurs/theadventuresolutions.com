@@ -1,0 +1,2442 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Adventure Solutions — Premium Web Design, Development & Digital Marketing Agency</title>
+  <meta name="description" content="The Adventure Solutions is an award-winning digital agency offering website design, web development, SEO, Google Ads, social media management, multimedia production, branding, and UI/UX design for modern businesses." />
+  <meta name="keywords" content="web design company, web development agency, SEO agency, digital marketing company, social media marketing, multimedia production, branding agency, UI UX design" />
+  <meta name="robots" content="index, follow" />
+  <meta name="author" content="The Adventure Solutions" />
+  <meta name="theme-color" content="#F7F9FF" />
+  <link rel="canonical" href="https://theadventuresolutions.com/" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://theadventuresolutions.com/" />
+  <meta property="og:title" content="The Adventure Solutions — Premium Web Design, Development & Digital Marketing Agency" />
+  <meta property="og:description" content="We architect digital experiences that drive growth. Websites, SEO, Marketing, Multimedia & Branding solutions for modern businesses." />
+  <meta property="og:image" content="https://theadventuresolutions.com/og-image.jpg" />
+  <meta property="og:locale" content="en_IN" />
+  <meta property="og:site_name" content="The Adventure Solutions" />
+
+  <!-- Twitter Cards -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@theadventuresolutions" />
+  <meta name="twitter:title" content="The Adventure Solutions — Premium Digital Agency" />
+  <meta name="twitter:description" content="We architect digital experiences that drive growth." />
+  <meta name="twitter:image" content="https://theadventuresolutions.com/og-image.jpg" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Syne', 'sans-serif'],
+            body: ['DM Sans', 'sans-serif'],
+            mono: ['Fira Code', 'monospace'],
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    /* ── ROOT TOKENS ──────────────────────────────────────────── */
+    :root {
+      --bg:        #F7F9FF;
+      --surface:   #FFFFFF;
+      --ink:       #0D1425;
+      --ink-2:     #5A6478;
+      --ink-3:     #98A3B4;
+      --blue:      #0057FF;
+      --blue-mid:  #0045CC;
+      --cyan:      #00D4FF;
+      --violet:    #7C5CFF;
+      --glass-bg:  rgba(255,255,255,0.72);
+      --glass-border: rgba(0,87,255,0.14);
+      --card-shadow: 0 4px 32px rgba(0,87,255,0.10), 0 1px 4px rgba(0,87,255,0.06);
+      --card-shadow-hover: 0 16px 64px rgba(0,87,255,0.18), 0 4px 16px rgba(0,87,255,0.10);
+      --r: 16px;
+      --r-lg: 24px;
+    }
+
+    /* ── BASE ─────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { background: var(--bg); scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── CUSTOM SCROLLBAR ──────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 3px; }
+
+    /* ── CURSOR ───────────────────────────────────────────────── */
+    #cursor-ring {
+      position: fixed; top: 0; left: 0;
+      width: 44px; height: 44px;
+      border: 1.5px solid var(--blue);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: width .25s, height .25s, background .25s, border-color .25s;
+      will-change: transform;
+    }
+    #cursor-dot {
+      position: fixed; top: 0; left: 0;
+      width: 7px; height: 7px;
+      background: var(--blue);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 10000;
+      transform: translate(-50%, -50%);
+      will-change: transform;
+    }
+    body.cursor-hover #cursor-ring {
+      width: 64px; height: 64px;
+      background: rgba(0,87,255,0.08);
+    }
+    @media (hover: none) { #cursor-ring, #cursor-dot { display: none; } }
+
+    /* ── LOADER ───────────────────────────────────────────────── */
+    #loader {
+      position: fixed; inset: 0;
+      background: #0D1425;
+      z-index: 9998;
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column;
+      gap: 24px;
+    }
+    #loader-canvas { display: block; }
+    #loader-label {
+      font-family: 'Fira Code', monospace;
+      font-size: 11px;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+    #loader-bar-wrap {
+      width: 160px;
+      height: 2px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 1px;
+      overflow: hidden;
+    }
+    #loader-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--blue), var(--cyan));
+      border-radius: 1px;
+      width: 0%;
+      transition: width .1s linear;
+    }
+
+    /* ── NAVIGATION ───────────────────────────────────────────── */
+    #nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 500;
+      transition: background .4s, box-shadow .4s, padding .3s;
+      padding: 20px 0;
+    }
+    #nav.scrolled {
+      background: rgba(247,249,255,0.88);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 1px 0 rgba(0,87,255,0.1);
+      padding: 12px 0;
+    }
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 22px;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, var(--blue) 0%, var(--violet) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .nav-link {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--ink-2);
+      position: relative;
+      transition: color .2s;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -3px; left: 0; right: 0;
+      height: 1.5px;
+      background: var(--blue);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .3s cubic-bezier(.34,1.56,.64,1);
+    }
+    .nav-link:hover { color: var(--blue); }
+    .nav-link:hover::after { transform: scaleX(1); }
+
+    /* ── BUTTONS ──────────────────────────────────────────────── */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      font-size: 14px;
+      letter-spacing: .1px;
+      border-radius: 10px;
+      padding: 13px 26px;
+      cursor: pointer;
+      border: none;
+      outline: none;
+      transition: all .3s cubic-bezier(.34,1.56,.64,1);
+      position: relative;
+      overflow: hidden;
+      white-space: nowrap;
+      text-decoration: none;
+    }
+    .btn-primary {
+      background: var(--blue);
+      color: #fff;
+    }
+    .btn-primary:hover {
+      background: var(--blue-mid);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0,87,255,.35);
+    }
+    .btn-ghost {
+      background: transparent;
+      color: var(--ink);
+      border: 1.5px solid rgba(0,87,255,0.25);
+    }
+    .btn-ghost:hover {
+      border-color: var(--blue);
+      color: var(--blue);
+      background: rgba(0,87,255,.05);
+      transform: translateY(-2px);
+    }
+    .btn-lg { padding: 16px 36px; font-size: 15px; border-radius: 12px; }
+
+    /* ── TYPOGRAPHY ───────────────────────────────────────────── */
+    .display-xl {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      line-height: 1.03;
+      letter-spacing: -2.5px;
+    }
+    .display-lg {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -1.5px;
+    }
+    .display-md {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -1px;
+    }
+    .text-gradient {
+      background: linear-gradient(135deg, var(--blue) 0%, var(--violet) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .eyebrow {
+      font-family: 'Fira Code', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--blue);
+    }
+
+    /* ── GLASS CARD ───────────────────────────────────────────── */
+    .glass-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--r-lg);
+      box-shadow: var(--card-shadow);
+      transition: box-shadow .35s, transform .35s cubic-bezier(.34,1.56,.64,1);
+    }
+    .glass-card:hover {
+      box-shadow: var(--card-shadow-hover);
+      transform: translateY(-6px);
+    }
+
+    /* ── SECTION ──────────────────────────────────────────────── */
+    .section { padding: 100px 0; }
+    .section-sm { padding: 70px 0; }
+    .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+
+    /* ── REVEAL ANIMATIONS ────────────────────────────────────── */
+    [data-reveal] { opacity: 0; transform: translateY(40px); }
+    [data-reveal].in-view {
+      animation: revealUp .7s cubic-bezier(.34,1.56,.64,1) forwards;
+    }
+    [data-reveal="scale"] { transform: scale(.96); }
+    [data-reveal="scale"].in-view {
+      animation: revealScale .7s cubic-bezier(.34,1.56,.64,1) forwards;
+    }
+    @keyframes revealUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes revealScale {
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* ── MARQUEE ──────────────────────────────────────────────── */
+    .marquee-track { display: flex; width: max-content; animation: marqueeScroll 28s linear infinite; }
+    @keyframes marqueeScroll { to { transform: translateX(-50%); } }
+    .marquee-wrap { overflow: hidden; }
+    .marquee-wrap:hover .marquee-track { animation-play-state: paused; }
+
+    /* ── HERO ─────────────────────────────────────────────────── */
+    #hero { position: relative; min-height: 100vh; display: flex; align-items: center; padding-top: 100px; overflow: hidden; }
+    #hero-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .hero-noise {
+      position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+      opacity: .5; pointer-events: none;
+    }
+    .hero-float-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 14px;
+      padding: 14px 18px;
+      box-shadow: var(--card-shadow);
+      position: absolute;
+      font-size: 13px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    /* ── SERVICE CARD ─────────────────────────────────────────── */
+    .service-card {
+      background: var(--surface);
+      border: 1px solid rgba(0,87,255,0.1);
+      border-radius: var(--r-lg);
+      padding: 32px;
+      cursor: pointer;
+      transition: all .35s cubic-bezier(.34,1.56,.64,1);
+      position: relative;
+      overflow: hidden;
+    }
+    .service-card::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(0,87,255,.04) 0%, rgba(124,92,255,.04) 100%);
+      opacity: 0;
+      transition: opacity .3s;
+      border-radius: inherit;
+    }
+    .service-card:hover, .service-card.active {
+      border-color: var(--blue);
+      transform: translateY(-6px);
+      box-shadow: var(--card-shadow-hover);
+    }
+    .service-card:hover::before, .service-card.active::before { opacity: 1; }
+    .service-icon {
+      width: 52px; height: 52px;
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    .service-expand {
+      max-height: 0; overflow: hidden;
+      transition: max-height .5s cubic-bezier(.34,1.56,.64,1), opacity .35s;
+      opacity: 0;
+    }
+    .service-card.active .service-expand { max-height: 300px; opacity: 1; }
+    .service-chip {
+      display: inline-block;
+      padding: 4px 10px;
+      background: rgba(0,87,255,.07);
+      color: var(--blue);
+      border-radius: 20px;
+      font-size: 11.5px;
+      font-weight: 500;
+    }
+
+    /* ── PROCESS ──────────────────────────────────────────────── */
+    .process-section { overflow: hidden; }
+    .process-track { display: flex; gap: 32px; will-change: transform; }
+    .process-step {
+      min-width: 320px;
+      background: var(--surface);
+      border: 1px solid rgba(0,87,255,0.1);
+      border-radius: var(--r-lg);
+      padding: 36px 32px;
+      flex-shrink: 0;
+      transition: transform .3s, box-shadow .3s;
+    }
+    .process-step:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--card-shadow-hover);
+    }
+    .process-num {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 52px;
+      line-height: 1;
+      background: linear-gradient(135deg, var(--blue), var(--violet));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 16px;
+    }
+
+    /* ── PORTFOLIO ────────────────────────────────────────────── */
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    @media (max-width: 900px) { .portfolio-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 600px) { .portfolio-grid { grid-template-columns: 1fr; } }
+    .portfolio-item {
+      border-radius: var(--r-lg);
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+      background: var(--surface);
+      border: 1px solid rgba(0,87,255,0.08);
+    }
+    .portfolio-thumb {
+      aspect-ratio: 4/3;
+      position: relative;
+      overflow: hidden;
+    }
+    .portfolio-thumb-inner {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 36px;
+      color: rgba(255,255,255,.9);
+      transition: transform .5s cubic-bezier(.34,1.56,.64,1);
+    }
+    .portfolio-item:hover .portfolio-thumb-inner { transform: scale(1.05); }
+    .portfolio-overlay {
+      position: absolute; inset: 0;
+      background: rgba(13,20,37,.6);
+      opacity: 0;
+      transition: opacity .3s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .portfolio-item:hover .portfolio-overlay { opacity: 1; }
+    .filter-btn {
+      padding: 8px 18px;
+      border: 1.5px solid rgba(0,87,255,0.2);
+      border-radius: 50px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all .25s;
+      background: transparent;
+      color: var(--ink-2);
+    }
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--blue);
+      border-color: var(--blue);
+      color: #fff;
+    }
+    .portfolio-item.hidden {
+      display: none;
+    }
+
+    /* ── METRIC CARD ──────────────────────────────────────────── */
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid rgba(0,87,255,0.1);
+      border-radius: var(--r-lg);
+      padding: 36px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .metric-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--blue), var(--violet));
+    }
+    .metric-num {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(25px, 2vw, 40px);
+      line-height: 1;
+      background: linear-gradient(135deg, var(--blue) 0%, var(--violet) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ── TESTIMONIAL ──────────────────────────────────────────── */
+    .testimonial-card {
+      background: var(--surface);
+      border: 1px solid rgba(0,87,255,0.1);
+      border-radius: var(--r-lg);
+      padding: 36px;
+      position: relative;
+    }
+    .testimonial-card::before {
+      content: '"';
+      position: absolute;
+      top: 20px; left: 28px;
+      font-family: Georgia, serif;
+      font-size: 80px;
+      line-height: 1;
+      color: var(--blue);
+      opacity: .15;
+    }
+    .stars { color: #F4B400; letter-spacing: 2px; font-size: 14px; }
+    .testimonial-avatar {
+      width: 44px; height: 44px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      color: #fff;
+    }
+
+    /* ── TECH GRID ────────────────────────────────────────────── */
+    .tech-item {
+      background: var(--surface);
+      border: 1px solid rgba(0,87,255,0.1);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      font-size: 12px; font-weight: 500; color: var(--ink-2);
+      text-align: center;
+      transition: all .25s cubic-bezier(.34,1.56,.64,1);
+      cursor: default;
+    }
+    .tech-item:hover {
+      border-color: var(--blue);
+      transform: translateY(-4px);
+      color: var(--blue);
+      box-shadow: 0 8px 24px rgba(0,87,255,.12);
+    }
+
+    /* ── FAQ ──────────────────────────────────────────────────── */
+    .faq-item {
+      border-bottom: 1px solid rgba(0,87,255,0.1);
+    }
+    .faq-trigger {
+      width: 100%;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px;
+      padding: 24px 0;
+      cursor: pointer;
+      background: none;
+      border: none;
+      text-align: left;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--ink);
+      transition: color .2s;
+    }
+    .faq-trigger:hover { color: var(--blue); }
+    .faq-icon {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: rgba(0,87,255,.08);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      color: var(--blue);
+      transition: transform .35s cubic-bezier(.34,1.56,.64,1), background .2s;
+    }
+    .faq-trigger[aria-expanded="true"] .faq-icon { transform: rotate(45deg); background: var(--blue); color: #fff; }
+    .faq-body {
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height .45s cubic-bezier(.34,1.56,.64,1);
+    }
+    .faq-body.open { max-height: 300px; }
+    .faq-body-inner { padding: 0 0 24px; color: var(--ink-2); line-height: 1.7; }
+
+    /* ── CONTACT FORM ─────────────────────────────────────────── */
+    .form-field {
+      position: relative;
+      margin-bottom: 24px;
+    }
+    .form-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ink-2);
+      display: block;
+      margin-bottom: 8px;
+    }
+    .form-input {
+      width: 100%;
+      background: var(--bg);
+      border: 1.5px solid rgba(0,87,255,0.18);
+      border-radius: 10px;
+      padding: 13px 16px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      color: var(--ink);
+      outline: none;
+      transition: border-color .25s, box-shadow .25s, background .2s;
+    }
+    .form-input:focus {
+      border-color: var(--blue);
+      background: var(--surface);
+      box-shadow: 0 0 0 4px rgba(0,87,255,.08);
+    }
+    textarea.form-input { resize: vertical; min-height: 120px; }
+    .step-pill {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13px; font-weight: 500;
+    }
+    .step-bubble {
+      width: 28px; height: 28px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700;
+      transition: all .3s;
+    }
+    .step-bubble.done { background: var(--blue); color: #fff; }
+    .step-bubble.active { background: var(--ink); color: #fff; }
+    .step-bubble.pending { background: rgba(0,87,255,.1); color: var(--ink-3); }
+    .step-line { flex: 1; height: 1.5px; background: rgba(0,87,255,.15); border-radius: 1px; }
+    .form-step { display: none; }
+    .form-step.active { display: block; animation: revealUp .4s cubic-bezier(.34,1.56,.64,1); }
+
+    /* ── FOOTER ───────────────────────────────────────────────── */
+    #footer {
+      background: var(--ink);
+      color: rgba(255,255,255,.8);
+      position: relative;
+      overflow: hidden;
+    }
+    #footer::before {
+      content: '';
+      position: absolute;
+      top: -200px; right: -200px;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,87,255,.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .footer-link {
+      font-size: 14px; color: rgba(255,255,255,.55);
+      transition: color .2s;
+      text-decoration: none;
+    }
+    .footer-link:hover { color: #fff; }
+    .social-btn {
+      width: 38px; height: 38px; border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.15);
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(255,255,255,.5);
+      font-size: 15px;
+      transition: all .25s;
+      text-decoration: none;
+    }
+    .social-btn:hover { border-color: var(--blue); color: #fff; background: rgba(0,87,255,.2); }
+
+    /* ── CTA SECTION ──────────────────────────────────────────── */
+    .cta-section {
+      background: linear-gradient(135deg, #0D1425 0%, #0f1e3d 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-glow {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+    }
+    .cta-glow-1 { top: -100px; left: -100px; width: 400px; height: 400px; background: rgba(0,87,255,.18); }
+    .cta-glow-2 { bottom: -100px; right: -100px; width: 400px; height: 400px; background: rgba(124,92,255,.15); }
+
+    /* ── WHY CHOOSE US ────────────────────────────────────────── */
+    .why-item {
+      display: flex; gap: 20px; align-items: flex-start;
+      padding: 24px;
+      border-radius: var(--r);
+      transition: background .25s;
+    }
+    .why-item:hover { background: rgba(0,87,255,.04); }
+    .why-icon {
+      width: 48px; height: 48px;
+      border-radius: 12px;
+      background: rgba(0,87,255,.08);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+
+    /* ── INDUSTRIES ───────────────────────────────────────────── */
+    .industry-item {
+      background: var(--surface);
+      border: 1px solid rgba(0,87,255,0.1);
+      border-radius: var(--r);
+      padding: 24px;
+      display: flex; align-items: center; gap: 14px;
+      transition: all .25s cubic-bezier(.34,1.56,.64,1);
+      cursor: default;
+    }
+    .industry-item:hover {
+      border-color: var(--blue);
+      transform: translateY(-4px);
+      box-shadow: var(--card-shadow);
+    }
+
+    /* ── MOBILE NAV ───────────────────────────────────────────── */
+    #mobile-menu {
+      display: none;
+      position: fixed; inset: 0; top: 0;
+      background: rgba(247,249,255,.97);
+      backdrop-filter: blur(20px);
+      z-index: 499;
+      flex-direction: column; align-items: center; justify-content: center; gap: 32px;
+    }
+    #mobile-menu.open { display: flex; }
+    .mobile-nav-link { font-family: 'Syne', sans-serif; font-size: 32px; font-weight: 700; color: var(--ink); text-decoration: none; }
+
+    /* ── MISC ─────────────────────────────────────────────────── */
+    .badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 12px;
+      background: rgba(0,87,255,.08);
+      border: 1px solid rgba(0,87,255,.2);
+      border-radius: 50px;
+      font-family: 'Fira Code', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--blue);
+    }
+    .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--blue); animation: ping .9s ease-out infinite; }
+    @keyframes ping { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.5)} }
+
+    .section-heading { font-size: clamp(32px, 4vw, 52px); }
+    .hero-heading { font-size: clamp(44px, 6.5vw, 88px); }
+
+    /* ── GRID DIVIDER ─────────────────────────────────────────── */
+    .grid-bg {
+      position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(0,87,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,87,255,0.04) 1px, transparent 1px);
+      background-size: 72px 72px;
+    }
+
+    /* Swiper custom */
+    .swiper-testimonials { overflow: hidden; }
+    .swiper-testimonials .swiper-slide { height: auto; }
+  </style>
+</head>
+
+<body>
+  <!-- ═══ CUSTOM CURSOR ════════════════════════════════════════ -->
+  <div id="cursor-ring"></div>
+  <div id="cursor-dot"></div>
+
+  <!-- ═══ LOADER ══════════════════════════════════════════════ -->
+  <div id="loader">
+    <canvas id="loader-canvas" width="480" height="200"></canvas>
+    <div id="loader-bar-wrap"><div id="loader-bar"></div></div>
+    <div id="loader-label">Initializing — TAS</div>
+  </div>
+
+  <!-- ═══ MOBILE MENU ══════════════════════════════════════════ -->
+  <div id="mobile-menu" role="dialog" aria-modal="true" aria-label="Navigation menu">
+    <button id="mobile-close" aria-label="Close menu" style="position:absolute;top:24px;right:24px;background:none;border:none;cursor:pointer;">
+      <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+    <a href="#services" class="mobile-nav-link">Services</a>
+    <a href="#portfolio" class="mobile-nav-link">Portfolio</a>
+    <a href="#about" class="mobile-nav-link">About</a>
+    <a href="#case-studies" class="mobile-nav-link">Case Studies</a>
+    <a href="#contact" class="mobile-nav-link">Contact</a>
+  </div>
+
+  <!-- ═══ NAV ══════════════════════════════════════════════════ -->
+  <header id="nav" role="banner">
+    <div class="container">
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <a href="#hero" class="nav-logo" aria-label="DigitalVenture home">The Adventure Solutions</a>
+        <nav aria-label="Main navigation" style="display:flex;align-items:center;gap:36px;" class="hidden lg:flex">
+          <a href="#services" class="nav-link">Services</a>
+          <a href="#portfolio" class="nav-link">Work</a>
+          <a href="#about" class="nav-link">About</a>
+          <a href="#case-studies" class="nav-link">Results</a>
+          <a href="#contact" class="btn btn-primary" style="font-size:13px;padding:10px 22px;border-radius:8px;">Start a Project</a>
+        </nav>
+        <button id="hamburger" aria-label="Open menu" style="background:none;border:none;cursor:pointer;padding:8px;" class="lg:hidden">
+          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ═══ HERO ════════════════════════════════════════════════ -->
+    <section id="hero" aria-label="Hero">
+      <canvas id="hero-canvas"></canvas>
+      <div class="hero-noise"></div>
+      <div class="grid-bg" style="opacity:0.6;"></div>
+
+      <!-- Floating glass cards -->
+      <div class="hero-float-card" id="fc1" style="top:22%;left:80%;animation:floatCard1 4s ease-in-out infinite;" aria-hidden="true">
+        <span style="color:var(--blue);font-size:12px;font-family:'Fira Code',monospace;">SEO Score</span>
+        <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:22px;color:var(--ink);">98 / 100</div>
+      </div>
+      <div class="hero-float-card" id="fc2" style="bottom:55%;left:80%;animation:floatCard2 5s ease-in-out infinite 1s;" aria-hidden="true">
+        <span style="color:#10B981;font-size:11px;">▲ 240% Traffic Growth</span>
+      </div>
+      <div class="hero-float-card" id="fc3" style="top:55%;left:80%;animation:floatCard1 4.5s ease-in-out infinite .5s;" aria-hidden="true">
+        <span style="color:var(--ink-2);font-size:11px;font-family:'Fira Code',monospace;">Lighthouse</span>
+        <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:18px;color:var(--ink);">95+ Score</div>
+      </div>
+      <style>
+        @keyframes floatCard1 { 0%,100%{transform:translateY(0px)} 50%{transform:translateY(-12px)} }
+        @keyframes floatCard2 { 0%,100%{transform:translateY(0px)} 50%{transform:translateY(10px)} }
+      </style>
+
+      <div class="container" style="position:relative;z-index:10;">
+        <div style="max-width:880px;">
+          <h1 class="display-xl hero-heading mb-6" data-reveal id="hero-h1">
+            We Architect<br>
+            <span class="text-gradient">Digital Experiences</span><br>
+            That Drive Growth
+          </h1>
+          <p class="text-md mb-10" style="color:var(--ink-2);max-width:560px;line-height:1.75;" data-reveal>
+            From websites that convert to strategies that scale — we build the digital infrastructure that ambitious brands need to dominate their market.
+          </p>
+          <div style="display:flex;gap:14px;flex-wrap:wrap;" data-reveal>
+            <a href="#contact" class="btn btn-primary btn-lg">Start Your Project</a>
+            <a href="#portfolio" class="btn btn-ghost btn-lg">
+              View Our Work
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
+            </a>
+          </div>
+
+          <!-- Stats row -->
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:32px;margin-top:5px;padding-top:48px;border-top:1px solid rgba(0,87,255,.1);" data-reveal>
+            <div>
+              <div class="display-md" style="font-size:clamp(28px,3vw,40px);" data-counter="500">0</div>
+              <div style="font-size:13px;color:var(--ink-2);margin-top:4px;">Projects Done</div>
+            </div>
+            <div>
+              <div class="display-md" style="font-size:clamp(28px,3vw,40px);" data-counter="200">0</div>
+              <div style="font-size:13px;color:var(--ink-2);margin-top:4px;">Happy Clients</div>
+            </div>
+            <div>
+              <div class="display-md" style="font-size:clamp(28px,3vw,40px);" data-counter="25">0</div>
+              <div style="font-size:13px;color:var(--ink-2);margin-top:4px;">Industries Served</div>
+            </div>
+            <div>
+              <div class="display-md" style="font-size:clamp(28px,3vw,40px);" id="roi-stat">3.8×</div>
+              <div style="font-size:13px;color:var(--ink-2);margin-top:4px;">Average ROI</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ TRUSTED BY ═══════════════════════════════════════════ -->
+    <section class="section-sm" aria-label="Trusted by brands" style="border-top:1px solid rgba(0,87,255,.07);border-bottom:1px solid rgba(0,87,255,.07);">
+      <div class="container" style="margin-bottom:24px;">
+        <p style="text-align:center;font-size:13px;color:var(--ink-3);letter-spacing:2px;text-transform:uppercase;font-family:'Fira Code',monospace;">Trusted by brands across industries</p>
+      </div>
+      <div class="marquee-wrap">
+        <div class="marquee-track" aria-hidden="true">
+          <!-- First set -->
+          <div style="display:flex;align-items:center;gap:64px;padding:0 32px;" class="marquee-set">
+            <span style="font-family:'Syne',sans-serif;font-weight:700;font-size:18px;color:var(--ink-3);white-space:nowrap;">TechNova</span>
+            <span style="font-family:'Syne',sans-serif;font-weight:700;font-size:18px;color:var(--ink-3);white-space:nowrap;">GrowthLabs</span>
+            <span style="font-family:'Syne',sans-serif;font-weight:700;font-size:18px;color:var(--ink-3);white-space:nowrap;">Apex Solutions</span>
+            <span style="font-family:'Syne',sans-serif;font-weight:700;font-size:18px;color:var(--ink-3);white-space:nowrap;">Zenith Group</span>
+            <span style="font-family:'Syne',sans-serif;font-weight:700;font-size:18px;color:var(--ink-3);white-space:nowrap;">Meridian Co</span>
+            <span style="font-family:'Syne',sans-serif;font-weight:700;font-size:18px;color:var(--ink-3);white-space:nowrap;">CoreEdge</span>
+            <span style="font-family:'Syne',sans-serif;font-weight:700;font-size:18px;color:var(--ink-3);white-space:nowrap;">LuxeMarket</span>
+            <span style="font-family:'Syne',sans-serif;font-weight:700;font-size:18px;color:var(--ink-3);white-space:nowrap;">BuildForce</span>
+          </div>
+          <!-- Duplicate for seamless scroll -->
+          <div style="display:flex;align-items:center;gap:64px;padding:0 32px;" class="marquee-set" aria-hidden="true">
+            <span style="font-family:'Syne',sans-serif;font-weight:700;font-size:18px;color:var(--ink-3);white-space:nowrap;">TechNova</span>
+            <span style="font-family:'Syne',sans-serif;font-weight:700;font-size:18px;color:var(--ink-3);white-space:nowrap;">GrowthLabs</span>
+            <span style="font-family:'Syne',sans-serif;font-weight:700;font-size:18px;color:var(--ink-3);white-space:nowrap;">Apex Solutions</span>
+            <span style="font-family:'Syne',sans-serif;font-weight:700;font-size:18px;color:var(--ink-3);white-space:nowrap;">Zenith Group</span>
+            <span style="font-family:'Syne',sans-serif;font-weight:700;font-size:18px;color:var(--ink-3);white-space:nowrap;">Meridian Co</span>
+            <span style="font-family:'Syne',sans-serif;font-weight:700;font-size:18px;color:var(--ink-3);white-space:nowrap;">CoreEdge</span>
+            <span style="font-family:'Syne',sans-serif;font-weight:700;font-size:18px;color:var(--ink-3);white-space:nowrap;">LuxeMarket</span>
+            <span style="font-family:'Syne',sans-serif;font-weight:700;font-size:18px;color:var(--ink-3);white-space:nowrap;">BuildForce</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ SERVICES ════════════════════════════════════════════ -->
+    <section id="services" class="section" aria-labelledby="services-heading">
+      <div class="container">
+        <div style="text-align:center;max-width:600px;margin:0 auto 72px;" data-reveal>
+          <div class="badge mb-6">Our Capabilities</div>
+          <h2 class="display-lg section-heading" id="services-heading">
+            Every Digital Need,<br><span class="text-gradient">One Expert Team</span>
+          </h2>
+          <p style="color:var(--ink-2);margin-top:20px;line-height:1.7;">From pixel-perfect design to measurable marketing outcomes — we handle it all, so you can focus on running your business.</p>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:24px;">
+          <!-- Service Card 1 -->
+          <article class="service-card" data-reveal onclick="toggleService(this)" role="button" tabindex="0" aria-expanded="false">
+            <div class="service-icon" style="background:linear-gradient(135deg,rgba(0,87,255,.1),rgba(0,212,255,.1));">🎨</div>
+            <h3 style="font-family:'Syne',sans-serif;font-weight:700;font-size:20px;margin-bottom:10px;">Web Design</h3>
+            <p style="color:var(--ink-2);font-size:14px;line-height:1.65;margin-bottom:16px;">Interfaces that demand attention, designed for human behavior and conversion psychology.</p>
+            <div class="service-expand">
+              <div style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(0,87,255,.1);">
+                <p style="font-size:13px;color:var(--ink-2);margin-bottom:12px;">Deliverables include wireframes, high-fidelity prototypes, responsive layouts, style guides, and handoff assets.</p>
+                <div style="display:flex;flex-wrap:wrap;gap:6px;">
+                  <span class="service-chip">UI/UX</span><span class="service-chip">Prototyping</span><span class="service-chip">Figma</span><span class="service-chip">A/B Testing</span>
+                </div>
+              </div>
+            </div>
+            <div style="margin-top:16px;display:flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:var(--blue);">
+              Learn more
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" class="service-arrow" style="transition:transform .3s;"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+            </div>
+          </article>
+
+          <!-- Service Card 2 -->
+          <article class="service-card" data-reveal onclick="toggleService(this)" role="button" tabindex="0" aria-expanded="false" style="animation-delay:.05s">
+            <div class="service-icon" style="background:linear-gradient(135deg,rgba(124,92,255,.1),rgba(0,87,255,.1));">💻</div>
+            <h3 style="font-family:'Syne',sans-serif;font-weight:700;font-size:20px;margin-bottom:10px;">Web Development</h3>
+            <p style="color:var(--ink-2);font-size:14px;line-height:1.65;margin-bottom:16px;">Code that performs as beautifully as it looks. Fast, secure, scalable across every device.</p>
+            <div class="service-expand">
+              <div style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(0,87,255,.1);">
+                <p style="font-size:13px;color:var(--ink-2);margin-bottom:12px;">Built on modern stacks with Lighthouse 95+ performance, WCAG 2.1 accessibility, and CI/CD pipeline.</p>
+                <div style="display:flex;flex-wrap:wrap;gap:6px;">
+                  <span class="service-chip">React</span><span class="service-chip">Next.js</span><span class="service-chip">WordPress</span><span class="service-chip">PHP</span>
+                </div>
+              </div>
+            </div>
+            <div style="margin-top:16px;display:flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:var(--blue);">Learn more <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" class="service-arrow" style="transition:transform .3s;"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+          </article>
+
+          <!-- Service Card 3 -->
+          <article class="service-card" data-reveal onclick="toggleService(this)" role="button" tabindex="0" aria-expanded="false" style="animation-delay:.1s">
+            <div class="service-icon" style="background:linear-gradient(135deg,rgba(16,185,129,.1),rgba(0,212,255,.1));">🛒</div>
+            <h3 style="font-family:'Syne',sans-serif;font-weight:700;font-size:20px;margin-bottom:10px;">E-Commerce Development</h3>
+            <p style="color:var(--ink-2);font-size:14px;line-height:1.65;margin-bottom:16px;">Stores that convert browsers into buyers. Optimized checkout flows with measurable revenue impact.</p>
+            <div class="service-expand">
+              <div style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(0,87,255,.1);">
+                <p style="font-size:13px;color:var(--ink-2);margin-bottom:12px;">Shopify, WooCommerce, and custom solutions with payment gateway integration, inventory sync, and analytics.</p>
+                <div style="display:flex;flex-wrap:wrap;gap:6px;">
+                  <span class="service-chip">Shopify</span><span class="service-chip">WooCommerce</span><span class="service-chip">Stripe</span>
+                </div>
+              </div>
+            </div>
+            <div style="margin-top:16px;display:flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:var(--blue);">Learn more <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" class="service-arrow" style="transition:transform .3s;"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+          </article>
+
+          <!-- Service Card 4 -->
+          <article class="service-card" data-reveal onclick="toggleService(this)" role="button" tabindex="0" aria-expanded="false" style="animation-delay:.15s">
+            <div class="service-icon" style="background:linear-gradient(135deg,rgba(244,180,0,.1),rgba(255,87,87,.1));">📈</div>
+            <h3 style="font-family:'Syne',sans-serif;font-weight:700;font-size:20px;margin-bottom:10px;">SEO</h3>
+            <p style="color:var(--ink-2);font-size:14px;line-height:1.65;margin-bottom:16px;">Visibility that compounds over time. Technical, on-page, and link-building executed with precision.</p>
+            <div class="service-expand">
+              <div style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(0,87,255,.1);">
+                <p style="font-size:13px;color:var(--ink-2);margin-bottom:12px;">Full-stack SEO: technical audit, keyword mapping, content strategy, Core Web Vitals optimization, local SEO.</p>
+                <div style="display:flex;flex-wrap:wrap;gap:6px;">
+                  <span class="service-chip">Technical SEO</span><span class="service-chip">Local SEO</span><span class="service-chip">Content</span>
+                </div>
+              </div>
+            </div>
+            <div style="margin-top:16px;display:flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:var(--blue);">Learn more <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" class="service-arrow" style="transition:transform .3s;"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+          </article>
+
+          <!-- Service Card 5 -->
+          <article class="service-card" data-reveal onclick="toggleService(this)" role="button" tabindex="0" aria-expanded="false" style="animation-delay:.2s">
+            <div class="service-icon" style="background:linear-gradient(135deg,rgba(255,87,87,.1),rgba(255,165,0,.1));">🎯</div>
+            <h3 style="font-family:'Syne',sans-serif;font-weight:700;font-size:20px;margin-bottom:10px;">Google & Meta Ads</h3>
+            <p style="color:var(--ink-2);font-size:14px;line-height:1.65;margin-bottom:16px;">Precision-targeted campaigns with obsessive ROAS tracking. We spend your budget like it's ours.</p>
+            <div class="service-expand">
+              <div style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(0,87,255,.1);">
+                <p style="font-size:13px;color:var(--ink-2);margin-bottom:12px;">Search, Display, Shopping, YouTube, Reels, Stories — multi-channel campaign management with real-time optimization.</p>
+                <div style="display:flex;flex-wrap:wrap;gap:6px;">
+                  <span class="service-chip">PPC</span><span class="service-chip">Retargeting</span><span class="service-chip">Analytics</span>
+                </div>
+              </div>
+            </div>
+            <div style="margin-top:16px;display:flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:var(--blue);">Learn more <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" class="service-arrow" style="transition:transform .3s;"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+          </article>
+
+          <!-- Service Card 6 -->
+          <article class="service-card" data-reveal onclick="toggleService(this)" role="button" tabindex="0" aria-expanded="false" style="animation-delay:.25s">
+            <div class="service-icon" style="background:linear-gradient(135deg,rgba(0,87,255,.1),rgba(16,185,129,.1));">🎬</div>
+            <h3 style="font-family:'Syne',sans-serif;font-weight:700;font-size:20px;margin-bottom:10px;">Multimedia Production</h3>
+            <p style="color:var(--ink-2);font-size:14px;line-height:1.65;margin-bottom:16px;">Photography, videography, motion graphics, and branded gifting — visual stories that move people.</p>
+            <div class="service-expand">
+              <div style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(0,87,255,.1);">
+                <p style="font-size:13px;color:var(--ink-2);margin-bottom:12px;">Corporate photography, product shoots, testimonial videos, motion graphics, drone footage, and gifting solutions.</p>
+                <div style="display:flex;flex-wrap:wrap;gap:6px;">
+                  <span class="service-chip">Photography</span><span class="service-chip">Video</span><span class="service-chip">Motion</span><span class="service-chip">Gifting</span>
+                </div>
+              </div>
+            </div>
+            <div style="margin-top:16px;display:flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:var(--blue);">Learn more <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" class="service-arrow" style="transition:transform .3s;"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ WHY CHOOSE US ════════════════════════════════════════ -->
+    <section id="about" class="section" style="background:var(--surface);" aria-labelledby="why-heading">
+      <div class="container">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;" class="lg:grid-cols-2 max-md:grid-cols-1">
+          <div data-reveal>
+            <div class="badge mb-6">Why TAS</div>
+            <h2 class="display-lg section-heading mb-6" id="why-heading">
+              Built Different.<br><span class="text-gradient">By Design.</span>
+            </h2>
+            <p style="color:var(--ink-2);line-height:1.75;margin-bottom:40px;">Most agencies specialise in one thing. We're built to handle your entire digital stack — so there's no handoff lag, no miscommunication, and no diluted strategy.</p>
+
+            <div>
+              <div class="why-item">
+                <div class="why-icon">🎯</div>
+                <div>
+                  <div style="font-family:'Syne',sans-serif;font-weight:600;font-size:16px;margin-bottom:6px;">Outcome-First Thinking</div>
+                  <div style="font-size:14px;color:var(--ink-2);line-height:1.65;">Every decision is tied back to a KPI. We don't chase deliverables — we chase results.</div>
+                </div>
+              </div>
+              <div class="why-item">
+                <div class="why-icon">⚡</div>
+                <div>
+                  <div style="font-family:'Syne',sans-serif;font-weight:600;font-size:16px;margin-bottom:6px;">Full-Stack Capability</div>
+                  <div style="font-size:14px;color:var(--ink-2);line-height:1.65;">Design, dev, SEO, ads, video — one team, zero silos, complete ownership.</div>
+                </div>
+              </div>
+              <div class="why-item">
+                <div class="why-icon">🔬</div>
+                <div>
+                  <div style="font-family:'Syne',sans-serif;font-weight:600;font-size:16px;margin-bottom:6px;">Technical Excellence</div>
+                  <div style="font-size:14px;color:var(--ink-2);line-height:1.65;">Lighthouse 95+ is our floor, not our ceiling. Performance is a feature.</div>
+                </div>
+              </div>
+              <div class="why-item">
+                <div class="why-icon">📊</div>
+                <div>
+                  <div style="font-family:'Syne',sans-serif;font-weight:600;font-size:16px;margin-bottom:6px;">Radical Transparency</div>
+                  <div style="font-size:14px;color:var(--ink-2);line-height:1.65;">Real-time dashboards, weekly updates, and honest reporting — no smoke and mirrors.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div data-reveal="scale" style="position:relative;">
+            <!-- Metric display -->
+            <div style="background:linear-gradient(135deg,#0D1425 0%,#0f1e3d 100%);border-radius:24px;padding:48px;position:relative;overflow:hidden;">
+              <div style="position:absolute;top:-60px;right:-60px;width:200px;height:200px;border-radius:50%;background:rgba(0,87,255,.2);filter:blur(50px);"></div>
+              <div style="position:absolute;bottom:-60px;left:-60px;width:200px;height:200px;border-radius:50%;background:rgba(124,92,255,.15);filter:blur(50px);"></div>
+
+              <div style="color:rgba(255,255,255,.5);font-family:'Fira Code',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:32px;">Performance Snapshot</div>
+
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px;">
+                <div>
+                  <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:42px;color:#fff;line-height:1;">280<span style="font-size:24px;color:var(--cyan);">%</span></div>
+                  <div style="font-size:13px;color:rgba(255,255,255,.5);margin-top:6px;">Avg Traffic Increase</div>
+                </div>
+                <div>
+                  <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:42px;color:#fff;line-height:1;">4.2<span style="font-size:24px;color:var(--cyan);">×</span></div>
+                  <div style="font-size:13px;color:rgba(255,255,255,.5);margin-top:6px;">Avg Revenue Growth</div>
+                </div>
+                <div>
+                  <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:42px;color:#fff;line-height:1;">98<span style="font-size:24px;color:var(--cyan);">%</span></div>
+                  <div style="font-size:13px;color:rgba(255,255,255,.5);margin-top:6px;">Client Retention Rate</div>
+                </div>
+                <div>
+                  <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:42px;color:#fff;line-height:1;">48<span style="font-size:24px;color:var(--cyan);">hr</span></div>
+                  <div style="font-size:13px;color:rgba(255,255,255,.5);margin-top:6px;">Average Response Time</div>
+                </div>
+              </div>
+
+              <div style="margin-top:32px;padding-top:24px;border-top:1px solid rgba(255,255,255,.1);font-size:12px;color:rgba(255,255,255,.35);font-family:'Fira Code',monospace;">
+                Based on 500+ client projects over 8 years
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ PROCESS ══════════════════════════════════════════════ -->
+    <section class="section process-section" aria-labelledby="process-heading">
+      <div class="container" style="margin-bottom:48px;">
+        <div style="text-align:center;" data-reveal>
+          <div class="badge mb-6">Our Process</div>
+          <h2 class="display-lg section-heading" id="process-heading">
+            How We<br><span class="text-gradient">Work With You</span>
+          </h2>
+        </div>
+      </div>
+      <div style="overflow-x:auto;padding:0 24px 24px;-webkit-overflow-scrolling:touch;">
+        <div class="process-track" style="min-width:max-content;">
+          <div class="process-step" data-reveal>
+            <div class="process-num">01</div>
+            <h3 style="font-family:'Syne',sans-serif;font-weight:700;font-size:20px;margin-bottom:12px;">Discovery</h3>
+            <p style="color:var(--ink-2);font-size:14px;line-height:1.7;">Deep-dive into your business, audience, and competitive landscape. We ask the questions others don't.</p>
+            <div style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(0,87,255,.1);">
+              <div style="font-size:12px;color:var(--ink-3);font-family:'Fira Code',monospace;">Stakeholder interviews · Competitive analysis · Technical audit</div>
+            </div>
+          </div>
+          <div class="process-step" data-reveal style="animation-delay:.1s">
+            <div class="process-num">02</div>
+            <h3 style="font-family:'Syne',sans-serif;font-weight:700;font-size:20px;margin-bottom:12px;">Strategy</h3>
+            <p style="color:var(--ink-2);font-size:14px;line-height:1.7;">We architect the plan — information architecture, tech stack, campaign structure, and KPIs to own.</p>
+            <div style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(0,87,255,.1);">
+              <div style="font-size:12px;color:var(--ink-3);font-family:'Fira Code',monospace;">Sitemap · Roadmap · Tech architecture · KPI framework</div>
+            </div>
+          </div>
+          <div class="process-step" data-reveal style="animation-delay:.2s">
+            <div class="process-num">03</div>
+            <h3 style="font-family:'Syne',sans-serif;font-weight:700;font-size:20px;margin-bottom:12px;">Create</h3>
+            <p style="color:var(--ink-2);font-size:14px;line-height:1.7;">Design, code, and produce. Every element reviewed against the brief, not the template library.</p>
+            <div style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(0,87,255,.1);">
+              <div style="font-size:12px;color:var(--ink-3);font-family:'Fira Code',monospace;">Wireframes · Design system · Development · Content production</div>
+            </div>
+          </div>
+          <div class="process-step" data-reveal style="animation-delay:.3s">
+            <div class="process-num">04</div>
+            <h3 style="font-family:'Syne',sans-serif;font-weight:700;font-size:20px;margin-bottom:12px;">Refine</h3>
+            <p style="color:var(--ink-2);font-size:14px;line-height:1.7;">QA, testing, performance optimization, and accessibility checks before a single line goes live.</p>
+            <div style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(0,87,255,.1);">
+              <div style="font-size:12px;color:var(--ink-3);font-family:'Fira Code',monospace;">Cross-browser testing · Lighthouse audit · Staging review</div>
+            </div>
+          </div>
+          <div class="process-step" data-reveal style="animation-delay:.4s">
+            <div class="process-num">05</div>
+            <h3 style="font-family:'Syne',sans-serif;font-weight:700;font-size:20px;margin-bottom:12px;">Launch</h3>
+            <p style="color:var(--ink-2);font-size:14px;line-height:1.7;">Zero-downtime deployment, post-launch monitoring, and team training so you can run independently.</p>
+            <div style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(0,87,255,.1);">
+              <div style="font-size:12px;color:var(--ink-3);font-family:'Fira Code',monospace;">CI/CD deployment · Analytics setup · Knowledge transfer</div>
+            </div>
+          </div>
+          <div class="process-step" data-reveal style="animation-delay:.5s">
+            <div class="process-num">06</div>
+            <h3 style="font-family:'Syne',sans-serif;font-weight:700;font-size:20px;margin-bottom:12px;">Grow</h3>
+            <p style="color:var(--ink-2);font-size:14px;line-height:1.7;">Ongoing optimization, A/B testing, content scaling, and strategic consulting as your business evolves.</p>
+            <div style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(0,87,255,.1);">
+              <div style="font-size:12px;color:var(--ink-3);font-family:'Fira Code',monospace;">Retainer support · CRO · Performance reporting</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ PORTFOLIO ════════════════════════════════════════════ -->
+    <section id="portfolio" class="section" style="background:var(--surface);" aria-labelledby="portfolio-heading">
+      <div class="container">
+        <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:48px;" data-reveal>
+          <div>
+            <div class="badge mb-4">Our Work</div>
+            <h2 class="display-lg section-heading" id="portfolio-heading">Selected Projects</h2>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;" role="group" aria-label="Portfolio filters">
+            <button class="filter-btn active" data-filter="all" onclick="filterPortfolio('all',this)">All Projects</button>
+            <button class="filter-btn" data-filter="web" onclick="filterPortfolio('web',this)">Web</button>
+            <button class="filter-btn" data-filter="ecom" onclick="filterPortfolio('ecom',this)">E-Commerce</button>
+            <button class="filter-btn" data-filter="brand" onclick="filterPortfolio('brand',this)">Branding</button>
+            <button class="filter-btn" data-filter="seo" onclick="filterPortfolio('seo',this)">SEO</button>
+            <button class="filter-btn" data-filter="media" onclick="filterPortfolio('media',this)">Multimedia</button>
+          </div>
+        </div>
+
+        <div class="portfolio-grid" id="portfolio-grid">
+          <!-- Item 1 -->
+          <article class="portfolio-item" data-category="web" data-reveal>
+            <div class="portfolio-thumb">
+              <div class="portfolio-thumb-inner" style="background:linear-gradient(135deg,#0D1425,#0057FF);">TECHFLOW</div>
+              <div class="portfolio-overlay">
+                <a href="#contact" class="btn btn-primary" style="font-size:13px;padding:10px 20px;">View Project</a>
+              </div>
+            </div>
+            <div style="padding:20px;">
+              <span class="service-chip" style="margin-bottom:10px;display:inline-block;">Web Design</span>
+              <h3 style="font-family:'Syne',sans-serif;font-weight:700;font-size:17px;margin-bottom:6px;">TechFlow SaaS Platform</h3>
+              <p style="font-size:13px;color:var(--ink-2);">Analytics dashboard with real-time data visualization</p>
+            </div>
+          </article>
+
+          <!-- Item 2 -->
+          <article class="portfolio-item" data-category="ecom" data-reveal style="animation-delay:.1s">
+            <div class="portfolio-thumb">
+              <div class="portfolio-thumb-inner" style="background:linear-gradient(135deg,#C2185B,#FF6B35);">LUXEMARKET</div>
+              <div class="portfolio-overlay">
+                <a href="#contact" class="btn btn-primary" style="font-size:13px;padding:10px 20px;">View Project</a>
+              </div>
+            </div>
+            <div style="padding:20px;">
+              <span class="service-chip" style="margin-bottom:10px;display:inline-block;">E-Commerce</span>
+              <h3 style="font-family:'Syne',sans-serif;font-weight:700;font-size:17px;margin-bottom:6px;">LuxeMarket Fashion Store</h3>
+              <p style="font-size:13px;color:var(--ink-2);">340% increase in online revenue post-launch</p>
+            </div>
+          </article>
+
+          <!-- Item 3 -->
+          <article class="portfolio-item" data-category="brand" data-reveal style="animation-delay:.2s">
+            <div class="portfolio-thumb">
+              <div class="portfolio-thumb-inner" style="background:linear-gradient(135deg,#00897B,#00BCD4);">ZENITH</div>
+              <div class="portfolio-overlay">
+                <a href="#contact" class="btn btn-primary" style="font-size:13px;padding:10px 20px;">View Project</a>
+              </div>
+            </div>
+            <div style="padding:20px;">
+              <span class="service-chip" style="margin-bottom:10px;display:inline-block;">Branding</span>
+              <h3 style="font-family:'Syne',sans-serif;font-weight:700;font-size:17px;margin-bottom:6px;">Zenith Group Identity</h3>
+              <p style="font-size:13px;color:var(--ink-2);">Complete rebrand for a 50-person consulting firm</p>
+            </div>
+          </article>
+
+          <!-- Item 4 -->
+          <article class="portfolio-item" data-category="seo" data-reveal style="animation-delay:.05s">
+            <div class="portfolio-thumb">
+              <div class="portfolio-thumb-inner" style="background:linear-gradient(135deg,#F57F17,#FF8F00);">GROWRANK</div>
+              <div class="portfolio-overlay">
+                <a href="#contact" class="btn btn-primary" style="font-size:13px;padding:10px 20px;">View Project</a>
+              </div>
+            </div>
+            <div style="padding:20px;">
+              <span class="service-chip" style="margin-bottom:10px;display:inline-block;">SEO</span>
+              <h3 style="font-family:'Syne',sans-serif;font-weight:700;font-size:17px;margin-bottom:6px;">GrowRank Healthcare Portal</h3>
+              <p style="font-size:13px;color:var(--ink-2);">Page 1 rankings for 48 target keywords in 90 days</p>
+            </div>
+          </article>
+
+          <!-- Item 5 -->
+          <article class="portfolio-item" data-category="media" data-reveal style="animation-delay:.15s">
+            <div class="portfolio-thumb">
+              <div class="portfolio-thumb-inner" style="background:linear-gradient(135deg,#37474F,#546E7A);">CINEFRAME</div>
+              <div class="portfolio-overlay">
+                <a href="#contact" class="btn btn-primary" style="font-size:13px;padding:10px 20px;">View Project</a>
+              </div>
+            </div>
+            <div style="padding:20px;">
+              <span class="service-chip" style="margin-bottom:10px;display:inline-block;">Multimedia</span>
+              <h3 style="font-family:'Syne',sans-serif;font-weight:700;font-size:17px;margin-bottom:6px;">CineFrame Brand Films</h3>
+              <p style="font-size:13px;color:var(--ink-2);">6-video series with 2.4M combined organic views</p>
+            </div>
+          </article>
+
+          <!-- Item 6 -->
+          <article class="portfolio-item" data-category="web" data-reveal style="animation-delay:.25s">
+            <div class="portfolio-thumb">
+              <div class="portfolio-thumb-inner" style="background:linear-gradient(135deg,#7C5CFF,#0057FF);">MERIDIAN</div>
+              <div class="portfolio-overlay">
+                <a href="#contact" class="btn btn-primary" style="font-size:13px;padding:10px 20px;">View Project</a>
+              </div>
+            </div>
+            <div style="padding:20px;">
+              <span class="service-chip" style="margin-bottom:10px;display:inline-block;">Web Dev</span>
+              <h3 style="font-family:'Syne',sans-serif;font-weight:700;font-size:17px;margin-bottom:6px;">Meridian Real Estate Portal</h3>
+              <p style="font-size:13px;color:var(--ink-2);">Custom property search with ML recommendations</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ RESULTS & METRICS ════════════════════════════════════ -->
+    <section class="section" aria-labelledby="results-heading">
+      <div class="container">
+        <div style="text-align:center;margin-bottom:64px;" data-reveal>
+          <div class="badge mb-6">Impact</div>
+          <h2 class="display-lg section-heading" id="results-heading">Numbers That<br><span class="text-gradient">Tell The Story</span></h2>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:24px;">
+          <div class="metric-card" data-reveal>
+            <div class="metric-num" data-count-up="280" data-suffix="%">0%</div>
+            <div style="font-family:'Syne',sans-serif;font-weight:600;font-size:15px;margin:10px 0 6px;">Avg Traffic Growth</div>
+            <div style="font-size:13px;color:var(--ink-2);">Within 6 months of engagement</div>
+          </div>
+          <div class="metric-card" data-reveal style="animation-delay:.1s">
+            <div class="metric-num" data-count-up="450" data-suffix="%">0%</div>
+            <div style="font-family:'Syne',sans-serif;font-weight:600;font-size:15px;margin:10px 0 6px;">Lead Generation</div>
+            <div style="font-size:13px;color:var(--ink-2);">Average increase in qualified leads</div>
+          </div>
+          <div class="metric-card" data-reveal style="animation-delay:.2s">
+            <div class="metric-num" data-count-up="38" data-prefix="3." data-no-count>3.8×</div>
+            <div style="font-family:'Syne',sans-serif;font-weight:600;font-size:15px;margin:10px 0 6px;">Average ROI</div>
+            <div style="font-size:13px;color:var(--ink-2);">Return on digital investment</div>
+          </div>
+          <div class="metric-card" data-reveal style="animation-delay:.3s">
+            <div class="metric-num" data-count-up="98" data-suffix="%">0%</div>
+            <div style="font-family:'Syne',sans-serif;font-weight:600;font-size:15px;margin:10px 0 6px;">Client Satisfaction</div>
+            <div style="font-size:13px;color:var(--ink-2);">Net promoter score across all projects</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ TESTIMONIALS ═════════════════════════════════════════ -->
+    <section class="section" style="background:var(--surface);" aria-labelledby="testimonials-heading">
+      <div class="container">
+        <div style="text-align:center;margin-bottom:64px;" data-reveal>
+          <div class="badge mb-6">Client Stories</div>
+          <h2 class="display-lg section-heading" id="testimonials-heading">What Our Clients<br><span class="text-gradient">Are Saying</span></h2>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:28px;">
+          <article class="testimonial-card" data-reveal>
+            <div class="stars mb-4">★★★★★</div>
+            <p style="font-size:15px;color:var(--ink-2);line-height:1.75;margin-bottom:24px;position:relative;z-index:1;">"DigitalVenture transformed our online presence entirely. The website they built increased conversions by 240% in the first quarter. Their team is meticulous — every detail considered."</p>
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div class="testimonial-avatar" style="background:linear-gradient(135deg,#0057FF,#7C5CFF);">SC</div>
+              <div>
+                <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:14px;">Sarah Chen</div>
+                <div style="font-size:12px;color:var(--ink-2);">CEO · TechNova Inc.</div>
+              </div>
+            </div>
+          </article>
+
+          <article class="testimonial-card" data-reveal style="animation-delay:.1s">
+            <div class="stars mb-4">★★★★★</div>
+            <p style="font-size:15px;color:var(--ink-2);line-height:1.75;margin-bottom:24px;position:relative;z-index:1;">"The SEO work alone delivered 380% organic growth in 5 months. What sets them apart is their transparency — weekly reports, zero fluff, honest timelines. Rare in this industry."</p>
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div class="testimonial-avatar" style="background:linear-gradient(135deg,#10B981,#00D4FF);">MJ</div>
+              <div>
+                <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:14px;">Marcus Johnson</div>
+                <div style="font-size:12px;color:var(--ink-2);">Founder · GrowthLabs</div>
+              </div>
+            </div>
+          </article>
+
+          <article class="testimonial-card" data-reveal style="animation-delay:.2s">
+            <div class="stars mb-4">★★★★★</div>
+            <p style="font-size:15px;color:var(--ink-2);line-height:1.75;margin-bottom:24px;position:relative;z-index:1;">"Best ROI we've seen on any agency engagement. The video content they produced became our highest-converting asset. They understand brand storytelling at a level most agencies don't."</p>
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div class="testimonial-avatar" style="background:linear-gradient(135deg,#F4B400,#FF6B35);">ER</div>
+              <div>
+                <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:14px;">Emily Rodriguez</div>
+                <div style="font-size:12px;color:var(--ink-2);">CMO · Apex Solutions</div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ TECHNOLOGIES ══════════════════════════════════════════ -->
+    <section class="section" aria-labelledby="tech-heading">
+      <div class="container">
+        <div style="text-align:center;margin-bottom:56px;" data-reveal>
+          <div class="badge mb-6">Our Stack</div>
+          <h2 class="display-md" style="font-size:clamp(26px,3.5vw,40px);" id="tech-heading">Tools We Master</h2>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:14px;" data-reveal>
+          <div class="tech-item"><span style="font-size:24px;">⚛️</span>React</div>
+          <div class="tech-item"><span style="font-size:24px;">▲</span>Next.js</div>
+          <div class="tech-item"><span style="font-size:24px;">🔵</span>WordPress</div>
+          <div class="tech-item"><span style="font-size:24px;">🟢</span>Shopify</div>
+          <div class="tech-item"><span style="font-size:24px;">🐘</span>PHP</div>
+          <div class="tech-item"><span style="font-size:24px;">🟡</span>JavaScript</div>
+          <div class="tech-item"><span style="font-size:24px;">📊</span>GA4</div>
+          <div class="tech-item"><span style="font-size:24px;">🔍</span>GSC</div>
+          <div class="tech-item"><span style="font-size:24px;">🎯</span>Meta Ads</div>
+          <div class="tech-item"><span style="font-size:24px;">☁️</span>AWS</div>
+          <div class="tech-item"><span style="font-size:24px;">🌐</span>Cloudflare</div>
+          <div class="tech-item"><span style="font-size:24px;">🎞️</span>Premiere</div>
+          <div class="tech-item"><span style="font-size:24px;">✨</span>Corel Draw</div>
+          <div class="tech-item"><span style="font-size:24px;">🔧</span>Ahrefs</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ INDUSTRIES ════════════════════════════════════════════ -->
+    <section class="section" style="background:var(--surface);" aria-labelledby="industries-heading">
+      <div class="container">
+        <div style="text-align:center;margin-bottom:56px;" data-reveal>
+          <div class="badge mb-6">Expertise Across</div>
+          <h2 class="display-lg section-heading" id="industries-heading">Industries We<br><span class="text-gradient">Understand Deeply</span></h2>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;" data-reveal>
+          <div class="industry-item"><span style="font-size:24px;">🏥</span><span style="font-weight:500;font-size:14px;">Healthcare</span></div>
+          <div class="industry-item"><span style="font-size:24px;">💰</span><span style="font-weight:500;font-size:14px;">Finance & Fintech</span></div>
+          <div class="industry-item"><span style="font-size:24px;">🛍️</span><span style="font-weight:500;font-size:14px;">Retail & E-Commerce</span></div>
+          <div class="industry-item"><span style="font-size:24px;">🏗️</span><span style="font-weight:500;font-size:14px;">Real Estate</span></div>
+          <div class="industry-item"><span style="font-size:24px;">🎓</span><span style="font-weight:500;font-size:14px;">Education</span></div>
+          <div class="industry-item"><span style="font-size:24px;">🍽️</span><span style="font-weight:500;font-size:14px;">Food & Beverage</span></div>
+          <div class="industry-item"><span style="font-size:24px;">🏭</span><span style="font-weight:500;font-size:14px;">Manufacturing</span></div>
+          <div class="industry-item"><span style="font-size:24px;">✈️</span><span style="font-weight:500;font-size:14px;">Hospitality & Travel</span></div>
+          <div class="industry-item"><span style="font-size:24px;">⚖️</span><span style="font-weight:500;font-size:14px;">Legal & Professional</span></div>
+          <div class="industry-item"><span style="font-size:24px;">💻</span><span style="font-weight:500;font-size:14px;">SaaS & Technology</span></div>
+          <div class="industry-item"><span style="font-size:24px;">🏎️</span><span style="font-weight:500;font-size:14px;">Automotive</span></div>
+          <div class="industry-item"><span style="font-size:24px;">🌱</span><span style="font-weight:500;font-size:14px;">Non-Profit & NGO</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ CASE STUDIES ══════════════════════════════════════════ -->
+    <section id="case-studies" class="section" aria-labelledby="cases-heading">
+      <div class="container">
+        <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:24px;margin-bottom:56px;" data-reveal>
+          <div>
+            <div class="badge mb-4">Case Studies</div>
+            <h2 class="display-lg section-heading" id="cases-heading">Results We're<br><span class="text-gradient">Proud Of</span></h2>
+          </div>
+          <a href="#contact" class="btn btn-ghost">View All Case Studies</a>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:32px;">
+          <!-- Case Study 1 -->
+          <article style="background:var(--surface);border:1px solid rgba(0,87,255,.1);border-radius:var(--r-lg);overflow:hidden;" data-reveal>
+            <div style="height:200px;background:linear-gradient(135deg,#0D1425,#0057FF);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;">
+              <div style="position:absolute;top:-40px;right:-40px;width:150px;height:150px;border-radius:50%;background:rgba(0,212,255,.15);filter:blur(30px);"></div>
+              <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:28px;color:#fff;text-align:center;position:relative;z-index:1;">
+                GrowthLabs<br><span style="font-size:14px;font-weight:400;opacity:.7;font-family:'Fira Code',monospace;">SEO + Content</span>
+              </div>
+            </div>
+            <div style="padding:28px;">
+              <div style="display:flex;gap:12px;margin-bottom:20px;">
+                <div style="flex:1;background:rgba(0,87,255,.05);border-radius:10px;padding:14px;text-align:center;">
+                  <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:22px;color:var(--blue);">380%</div>
+                  <div style="font-size:11px;color:var(--ink-2);margin-top:4px;">Organic Traffic</div>
+                </div>
+                <div style="flex:1;background:rgba(0,87,255,.05);border-radius:10px;padding:14px;text-align:center;">
+                  <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:22px;color:var(--blue);">48</div>
+                  <div style="font-size:11px;color:var(--ink-2);margin-top:4px;">Pg 1 Keywords</div>
+                </div>
+                <div style="flex:1;background:rgba(0,87,255,.05);border-radius:10px;padding:14px;text-align:center;">
+                  <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:22px;color:var(--blue);">90d</div>
+                  <div style="font-size:11px;color:var(--ink-2);margin-top:4px;">Timeline</div>
+                </div>
+              </div>
+              <h3 style="font-family:'Syne',sans-serif;font-weight:700;font-size:18px;margin-bottom:10px;">From 2,000 to 9,600 Monthly Organic Visitors</h3>
+              <p style="font-size:14px;color:var(--ink-2);line-height:1.7;margin-bottom:20px;">We rebuilt their technical SEO foundation, mapped 140 keywords to content clusters, and deployed an editorial calendar that compounded month over month.</p>
+              <a href="#contact" class="btn btn-ghost" style="font-size:13px;padding:10px 20px;">Read Full Case Study →</a>
+            </div>
+          </article>
+
+          <!-- Case Study 2 -->
+          <article style="background:var(--surface);border:1px solid rgba(0,87,255,.1);border-radius:var(--r-lg);overflow:hidden;" data-reveal style="animation-delay:.15s">
+            <div style="height:200px;background:linear-gradient(135deg,#C2185B,#7C5CFF);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;">
+              <div style="position:absolute;bottom:-40px;left:-40px;width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,.1);filter:blur(30px);"></div>
+              <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:28px;color:#fff;text-align:center;position:relative;z-index:1;">
+                LuxeMarket<br><span style="font-size:14px;font-weight:400;opacity:.7;font-family:'Fira Code',monospace;">E-Commerce + Ads</span>
+              </div>
+            </div>
+            <div style="padding:28px;">
+              <div style="display:flex;gap:12px;margin-bottom:20px;">
+                <div style="flex:1;background:rgba(0,87,255,.05);border-radius:10px;padding:14px;text-align:center;">
+                  <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:22px;color:var(--blue);">340%</div>
+                  <div style="font-size:11px;color:var(--ink-2);margin-top:4px;">Revenue Growth</div>
+                </div>
+                <div style="flex:1;background:rgba(0,87,255,.05);border-radius:10px;padding:14px;text-align:center;">
+                  <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:22px;color:var(--blue);">4.8×</div>
+                  <div style="font-size:11px;color:var(--ink-2);margin-top:4px;">ROAS</div>
+                </div>
+                <div style="flex:1;background:rgba(0,87,255,.05);border-radius:10px;padding:14px;text-align:center;">
+                  <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:22px;color:var(--blue);">68%</div>
+                  <div style="font-size:11px;color:var(--ink-2);margin-top:4px;">Cart Recovery</div>
+                </div>
+              </div>
+              <h3 style="font-family:'Syne',sans-serif;font-weight:700;font-size:18px;margin-bottom:10px;">₹40L to ₹1.7Cr Monthly Revenue in 8 Months</h3>
+              <p style="font-size:14px;color:var(--ink-2);line-height:1.7;margin-bottom:20px;">New Shopify store, Meta/Google ad campaigns, abandoned cart automation, and influencer content strategy combined to transform a struggling retailer.</p>
+              <a href="#contact" class="btn btn-ghost" style="font-size:13px;padding:10px 20px;">Read Full Case Study →</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ FAQ ══════════════════════════════════════════════════ -->
+    <section class="section" style="background:var(--surface);" aria-labelledby="faq-heading">
+      <div class="container" style="max-width:820px;">
+        <div style="text-align:center;margin-bottom:64px;" data-reveal>
+          <div class="badge mb-6">FAQ</div>
+          <h2 class="display-lg section-heading" id="faq-heading">Questions We<br><span class="text-gradient">Hear Often</span></h2>
+        </div>
+
+        <div data-reveal>
+          <div class="faq-item">
+            <button class="faq-trigger" aria-expanded="false" onclick="toggleFaq(this)">
+              How long does a typical website project take?
+              <span class="faq-icon" aria-hidden="true">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+              </span>
+            </button>
+            <div class="faq-body" role="region">
+              <div class="faq-body-inner">Timelines vary by scope. A focused landing page takes 2–3 weeks. A full business website runs 4–8 weeks. Complex web applications or e-commerce platforms are typically 8–16 weeks. We provide a detailed project plan with milestones in the first week.</div>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-trigger" aria-expanded="false" onclick="toggleFaq(this)">
+              What's your pricing structure?
+              <span class="faq-icon" aria-hidden="true"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span>
+            </button>
+            <div class="faq-body" role="region">
+              <div class="faq-body-inner">We offer project-based pricing for defined deliverables and monthly retainers for ongoing work. Web design projects typically start at ₹50,000. Full website builds from ₹1.5L. SEO and marketing retainers from ₹25,000/month. We scope each project precisely — no surprises.</div>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-trigger" aria-expanded="false" onclick="toggleFaq(this)">
+              Do you provide ongoing support after launch?
+              <span class="faq-icon" aria-hidden="true"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span>
+            </button>
+            <div class="faq-body" role="region">
+              <div class="faq-body-inner">Yes. All projects include a 30-day post-launch support window. We offer maintenance retainers covering updates, security patches, performance monitoring, and content changes. Many clients work with us on an ongoing basis for SEO, ads, and growth initiatives.</div>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-trigger" aria-expanded="false" onclick="toggleFaq(this)">
+              How do you approach SEO strategy?
+              <span class="faq-icon" aria-hidden="true"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span>
+            </button>
+            <div class="faq-body" role="region">
+              <div class="faq-body-inner">We start with a technical audit, competitor keyword gap analysis, and Core Web Vitals assessment. From there we build a content architecture aligned to search intent, implement on-page optimisation, and deploy a link acquisition strategy. Monthly reporting ties every activity back to traffic and revenue KPIs.</div>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-trigger" aria-expanded="false" onclick="toggleFaq(this)">
+              Can you work with our existing technology stack?
+              <span class="faq-icon" aria-hidden="true"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span>
+            </button>
+            <div class="faq-body" role="region">
+              <div class="faq-body-inner">Usually yes. Our team works across WordPress, Shopify, React, Laravel, PHP, and custom stacks. We assess your existing infrastructure in the discovery phase and recommend the path that minimizes disruption while maximizing outcomes — whether that's extending what you have or rebuilding.</div>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-trigger" aria-expanded="false" onclick="toggleFaq(this)">
+              Do you work with international clients?
+              <span class="faq-icon" aria-hidden="true"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span>
+            </button>
+            <div class="faq-body" role="region">
+              <div class="faq-body-inner">Absolutely. We work with clients across India, the UAE, UK, US, and Southeast Asia. All project management is done asynchronously-first using Notion, Slack, and Loom — so timezone differences rarely cause friction. We've successfully delivered projects for clients in 15+ countries.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ CTA ════════════════════════════════════════════════════ -->
+    <section class="cta-section section" aria-labelledby="cta-heading">
+      <div class="cta-glow cta-glow-1"></div>
+      <div class="cta-glow cta-glow-2"></div>
+      <div class="container" style="text-align:center;position:relative;z-index:2;">
+        <div data-reveal>
+          <div class="badge mb-6" style="border-color:rgba(0,212,255,.3);color:var(--cyan);">Ready to grow?</div>
+          <h2 class="display-xl" style="color:#fff;font-size:clamp(36px,5.5vw,72px);margin-bottom:20px;" id="cta-heading">
+            Let's Build Something<br><span style="color:var(--cyan);">Extraordinary</span>
+          </h2>
+          <p style="color:rgba(255,255,255,.6);max-width:480px;margin:0 auto 48px;line-height:1.7;font-size:16px;">Join 200+ companies that have transformed their business with world-class digital solutions.</p>
+          <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+            <a href="#contact" class="btn btn-primary btn-lg">Start Your Project</a>
+            <a href="tel:+91XXXXXXXXXX" class="btn btn-lg" style="background:rgba(255,255,255,.1);color:#fff;border:1.5px solid rgba(255,255,255,.25);">
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 5.61 5.61l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              Schedule a Call
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ CONTACT ═══════════════════════════════════════════════ -->
+    <section id="contact" class="section" aria-labelledby="contact-heading">
+      <div class="container" style="max-width:1100px;">
+        <div style="text-align:center;margin-bottom:64px;" data-reveal>
+          <div class="badge mb-6">Start a Project</div>
+          <h2 class="display-lg section-heading" id="contact-heading">Tell Us About<br><span class="text-gradient">Your Vision</span></h2>
+          <p style="color:var(--ink-2);margin-top:16px;max-width:420px;margin-left:auto;margin-right:auto;">Complete the form below and we'll get back to you within 24 hours with a tailored proposal.</p>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 380px;gap:48px;align-items:start;" class="max-md:grid-cols-1">
+          <!-- Form -->
+          <div style="background:var(--surface);border:1px solid rgba(0,87,255,.1);border-radius:var(--r-lg);padding:48px;" data-reveal>
+            <!-- Step indicator -->
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:40px;" id="step-indicators">
+              <div class="step-pill">
+                <div class="step-bubble active" id="s1b">1</div>
+                <span style="font-size:13px;color:var(--ink);">You</span>
+              </div>
+              <div class="step-line"></div>
+              <div class="step-pill">
+                <div class="step-bubble pending" id="s2b">2</div>
+                <span style="font-size:13px;color:var(--ink-2);">Project</span>
+              </div>
+              <div class="step-line"></div>
+              <div class="step-pill">
+                <div class="step-bubble pending" id="s3b">3</div>
+                <span style="font-size:13px;color:var(--ink-2);">Budget</span>
+              </div>
+            </div>
+
+            <form id="contact-form" novalidate>
+              <!-- Step 1 -->
+              <div class="form-step active" id="fstep-1">
+                <h3 style="font-family:'Syne',sans-serif;font-weight:700;font-size:22px;margin-bottom:28px;">Who are you?</h3>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 20px;">
+                  <div class="form-field">
+                    <label class="form-label" for="fname">First Name *</label>
+                    <input class="form-input" id="fname" name="fname" type="text" placeholder="Sarah" required autocomplete="given-name" />
+                  </div>
+                  <div class="form-field">
+                    <label class="form-label" for="lname">Last Name</label>
+                    <input class="form-input" id="lname" name="lname" type="text" placeholder="Chen" autocomplete="family-name" />
+                  </div>
+                </div>
+                <div class="form-field">
+                  <label class="form-label" for="email">Email Address *</label>
+                  <input class="form-input" id="email" name="email" type="email" placeholder="sarah@company.com" required autocomplete="email" />
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 20px;">
+                  <div class="form-field">
+                    <label class="form-label" for="phone">Phone Number</label>
+                    <input class="form-input" id="phone" name="phone" type="tel" placeholder="+91 98765 43210" autocomplete="tel" />
+                  </div>
+                  <div class="form-field">
+                    <label class="form-label" for="company">Company Name</label>
+                    <input class="form-input" id="company" name="company" type="text" placeholder="TechNova Inc." autocomplete="organization" />
+                  </div>
+                </div>
+                <button type="button" class="btn btn-primary" style="width:100%;justify-content:center;padding:15px;" onclick="nextFormStep(1)">
+                  Continue to Project Details
+                  <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
+                </button>
+              </div>
+
+              <!-- Step 2 -->
+              <div class="form-step" id="fstep-2">
+                <h3 style="font-family:'Syne',sans-serif;font-weight:700;font-size:22px;margin-bottom:28px;">About your project</h3>
+                <div class="form-field">
+                  <label class="form-label">Services Required *</label>
+                  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                    <label style="display:flex;align-items:center;gap:10px;padding:12px;border:1.5px solid rgba(0,87,255,.15);border-radius:8px;cursor:pointer;transition:border-color .2s;font-size:13px;" class="service-checkbox">
+                      <input type="checkbox" name="svc[]" value="web-design" style="accent-color:var(--blue);" onchange="styleServiceCheck(this)">Web Design
+                    </label>
+                    <label style="display:flex;align-items:center;gap:10px;padding:12px;border:1.5px solid rgba(0,87,255,.15);border-radius:8px;cursor:pointer;transition:border-color .2s;font-size:13px;" class="service-checkbox">
+                      <input type="checkbox" name="svc[]" value="web-dev" style="accent-color:var(--blue);" onchange="styleServiceCheck(this)">Web Development
+                    </label>
+                    <label style="display:flex;align-items:center;gap:10px;padding:12px;border:1.5px solid rgba(0,87,255,.15);border-radius:8px;cursor:pointer;transition:border-color .2s;font-size:13px;" class="service-checkbox">
+                      <input type="checkbox" name="svc[]" value="seo" style="accent-color:var(--blue);" onchange="styleServiceCheck(this)">SEO
+                    </label>
+                    <label style="display:flex;align-items:center;gap:10px;padding:12px;border:1.5px solid rgba(0,87,255,.15);border-radius:8px;cursor:pointer;transition:border-color .2s;font-size:13px;" class="service-checkbox">
+                      <input type="checkbox" name="svc[]" value="ads" style="accent-color:var(--blue);" onchange="styleServiceCheck(this)">Google / Meta Ads
+                    </label>
+                    <label style="display:flex;align-items:center;gap:10px;padding:12px;border:1.5px solid rgba(0,87,255,.15);border-radius:8px;cursor:pointer;transition:border-color .2s;font-size:13px;" class="service-checkbox">
+                      <input type="checkbox" name="svc[]" value="social" style="accent-color:var(--blue);" onchange="styleServiceCheck(this)">Social Media
+                    </label>
+                    <label style="display:flex;align-items:center;gap:10px;padding:12px;border:1.5px solid rgba(0,87,255,.15);border-radius:8px;cursor:pointer;transition:border-color .2s;font-size:13px;" class="service-checkbox">
+                      <input type="checkbox" name="svc[]" value="multimedia" style="accent-color:var(--blue);" onchange="styleServiceCheck(this)">Multimedia
+                    </label>
+                  </div>
+                </div>
+                <div class="form-field">
+                  <label class="form-label" for="message">Project Brief *</label>
+                  <textarea class="form-input" id="message" name="message" placeholder="Tell us about your business, your goals, and what success looks like..." required></textarea>
+                </div>
+                <div style="display:flex;gap:12px;">
+                  <button type="button" class="btn btn-ghost" style="padding:15px 24px;" onclick="prevFormStep(2)">← Back</button>
+                  <button type="button" class="btn btn-primary" style="flex:1;justify-content:center;padding:15px;" onclick="nextFormStep(2)">Continue to Budget →</button>
+                </div>
+              </div>
+
+              <!-- Step 3 -->
+              <div class="form-step" id="fstep-3">
+                <h3 style="font-family:'Syne',sans-serif;font-weight:700;font-size:22px;margin-bottom:28px;">Budget & timeline</h3>
+                <div class="form-field">
+                  <label class="form-label" for="budget">Budget Range *</label>
+                  <select class="form-input" id="budget" name="budget" required>
+                    <option value="">Select your budget</option>
+                    <option value="50k-1l">₹50,000 – ₹1,00,000</option>
+                    <option value="1l-3l">₹1,00,000 – ₹3,00,000</option>
+                    <option value="3l-10l">₹3,00,000 – ₹10,00,000</option>
+                    <option value="10l+">₹10,00,000+</option>
+                    <option value="monthly">Monthly Retainer</option>
+                  </select>
+                </div>
+                <div class="form-field">
+                  <label class="form-label" for="timeline">Desired Timeline *</label>
+                  <select class="form-input" id="timeline" name="timeline" required>
+                    <option value="">When do you need this?</option>
+                    <option value="asap">As soon as possible</option>
+                    <option value="1-2m">Within 1–2 months</option>
+                    <option value="3-6m">Within 3–6 months</option>
+                    <option value="6m+">6+ months</option>
+                    <option value="exploring">Just exploring</option>
+                  </select>
+                </div>
+                <div class="form-field">
+                  <label class="form-label" for="how-found">How did you find us?</label>
+                  <select class="form-input" id="how-found" name="how-found">
+                    <option value="">Select one</option>
+                    <option value="google">Google Search</option>
+                    <option value="referral">Referral / Word of mouth</option>
+                    <option value="social">Social Media</option>
+                    <option value="portfolio">Saw our portfolio</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+                <div style="display:flex;gap:12px;">
+                  <button type="button" class="btn btn-ghost" style="padding:15px 24px;" onclick="prevFormStep(3)">← Back</button>
+                  <button type="submit" class="btn btn-primary" style="flex:1;justify-content:center;padding:15px;" id="submit-btn">
+                    Send Project Brief
+                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 2 11 13M22 2 15 22l-4-9-9-4 20-7z"/></svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Success -->
+              <div class="form-step" id="fstep-success">
+                <div style="text-align:center;padding:40px 0;">
+                  <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--violet));display:flex;align-items:center;justify-content:center;margin:0 auto 24px;">
+                    <svg width="32" height="32" fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                  </div>
+                  <h3 style="font-family:'Syne',sans-serif;font-weight:800;font-size:26px;margin-bottom:12px;">Brief Received!</h3>
+                  <p style="color:var(--ink-2);line-height:1.7;margin-bottom:32px;">We've received your project brief and will review it within 24 hours. Expect a tailored proposal from our team shortly.</p>
+                  <div style="background:rgba(0,87,255,.05);border:1px solid rgba(0,87,255,.1);border-radius:12px;padding:20px;font-size:14px;color:var(--ink-2);text-align:left;">
+                    <strong style="color:var(--ink);">What happens next:</strong><br>
+                    1. Our team reviews your brief (within 24h)<br>
+                    2. We prepare a tailored proposal<br>
+                    3. Free 30-min strategy call to align
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <!-- Sidebar -->
+          <div data-reveal="scale" style="animation-delay:.1s">
+            <div style="background:var(--surface);border:1px solid rgba(0,87,255,.1);border-radius:var(--r-lg);padding:32px;margin-bottom:24px;">
+              <div style="font-family:'Fira Code',monospace;font-size:11px;color:var(--blue);letter-spacing:2px;text-transform:uppercase;margin-bottom:20px;">Response Promise</div>
+              <div style="display:flex;flex-direction:column;gap:16px;">
+                <div style="display:flex;align-items:center;gap:14px;">
+                  <div style="width:36px;height:36px;border-radius:8px;background:rgba(0,87,255,.08);display:flex;align-items:center;justify-content:center;">⚡</div>
+                  <div><div style="font-weight:500;font-size:14px;">24-hour reply</div><div style="font-size:12px;color:var(--ink-2);">On every brief we receive</div></div>
+                </div>
+                <div style="display:flex;align-items:center;gap:14px;">
+                  <div style="width:36px;height:36px;border-radius:8px;background:rgba(0,87,255,.08);display:flex;align-items:center;justify-content:center;">📋</div>
+                  <div><div style="font-weight:500;font-size:14px;">Tailored proposal</div><div style="font-size:12px;color:var(--ink-2);">Specific to your goals and budget</div></div>
+                </div>
+                <div style="display:flex;align-items:center;gap:14px;">
+                  <div style="width:36px;height:36px;border-radius:8px;background:rgba(0,87,255,.08);display:flex;align-items:center;justify-content:center;">🤝</div>
+                  <div><div style="font-weight:500;font-size:14px;">Free strategy call</div><div style="font-size:12px;color:var(--ink-2);">30 minutes, zero obligation</div></div>
+                </div>
+              </div>
+            </div>
+
+            <div style="background:var(--surface);border:1px solid rgba(0,87,255,.1);border-radius:var(--r-lg);padding:32px;">
+              <div style="font-family:'Fira Code',monospace;font-size:11px;color:var(--blue);letter-spacing:2px;text-transform:uppercase;margin-bottom:20px;">Direct Contact</div>
+              <div style="display:flex;flex-direction:column;gap:16px;">
+                <a href="mailto:hello@digitalventure.in" style="display:flex;align-items:center;gap:12px;color:var(--ink);text-decoration:none;font-size:14px;">
+                  <span style="color:var(--blue);">✉</span> hello@digitalventure.in
+                </a>
+                <a href="tel:+91XXXXXXXXXX" style="display:flex;align-items:center;gap:12px;color:var(--ink);text-decoration:none;font-size:14px;">
+                  <span style="color:var(--blue);">📞</span> +91 XXXXX XXXXX
+                </a>
+                <div style="display:flex;align-items:center;gap:12px;font-size:14px;color:var(--ink-2);">
+                  <span style="color:var(--blue);">📍</span> Chennai · Coimbatore · Remote
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ═══ FOOTER ════════════════════════════════════════════════ -->
+  <footer id="footer" role="contentinfo">
+    <div class="container" style="padding-top:72px;padding-bottom:72px;">
+      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:64px;" class="max-md:grid-cols-2 max-sm:grid-cols-1">
+        <!-- Brand col -->
+        <div>
+          <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:26px;margin-bottom:20px;background:linear-gradient(135deg,var(--blue),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">The Adventure Solutions</div>
+          <p style="font-size:14px;color:rgba(255,255,255,.45);line-height:1.75;max-width:260px;margin-bottom:28px;">Crafting digital experiences that drive measurable growth for ambitious brands worldwide since 2016.</p>
+          <div style="display:flex;gap:10px;">
+            <a href="#" class="social-btn" aria-label="LinkedIn">in</a>
+            <a href="#" class="social-btn" aria-label="Instagram">ig</a>
+            <a href="#" class="social-btn" aria-label="Twitter">𝕏</a>
+            <a href="#" class="social-btn" aria-label="YouTube">▶</a>
+          </div>
+        </div>
+
+        <!-- Services -->
+        <nav aria-label="Services links">
+          <div style="font-size:13px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.35);font-family:'Fira Code',monospace;margin-bottom:20px;">Services</div>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:12px;">
+            <li><a href="#services" class="footer-link">Web Design</a></li>
+            <li><a href="#services" class="footer-link">Web Development</a></li>
+            <li><a href="#services" class="footer-link">SEO</a></li>
+            <li><a href="#services" class="footer-link">Google Ads</a></li>
+            <li><a href="#services" class="footer-link">Social Media</a></li>
+            <li><a href="#services" class="footer-link">Multimedia</a></li>
+          </ul>
+        </nav>
+
+        <!-- Company -->
+        <nav aria-label="Company links">
+          <div style="font-size:13px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.35);font-family:'Fira Code',monospace;margin-bottom:20px;">Company</div>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:12px;">
+            <li><a href="#about" class="footer-link">About Us</a></li>
+            <li><a href="#portfolio" class="footer-link">Portfolio</a></li>
+            <li><a href="#case-studies" class="footer-link">Case Studies</a></li>
+            <li><a href="#" class="footer-link">Blog</a></li>
+            <li><a href="#" class="footer-link">Careers</a></li>
+            <li><a href="#contact" class="footer-link">Contact</a></li>
+          </ul>
+        </nav>
+
+        <!-- Newsletter -->
+        <div>
+          <div style="font-size:13px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.35);font-family:'Fira Code',monospace;margin-bottom:20px;">Newsletter</div>
+          <p style="font-size:13px;color:rgba(255,255,255,.4);margin-bottom:16px;line-height:1.6;">Monthly insights on digital strategy, SEO, and growth.</p>
+          <form style="display:flex;gap:8px;" onsubmit="subscribeNewsletter(event)">
+            <input type="email" placeholder="your@email.com" required style="flex:1;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:10px 14px;color:#fff;font-size:13px;outline:none;font-family:'DM Sans',sans-serif;" />
+            <button type="submit" class="btn btn-primary" style="padding:10px 16px;border-radius:8px;font-size:13px;flex-shrink:0;">→</button>
+          </form>
+        </div>
+      </div>
+
+      <div style="border-top:1px solid rgba(255,255,255,.07);padding-top:28px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px;">
+        <div style="font-size:13px;color:rgba(255,255,255,.3);">© 2026 The Adventure Solutions. All rights reserved.</div>
+        <div style="display:flex;gap:24px;">
+          <a href="#" class="footer-link" style="font-size:12px;">Privacy Policy</a>
+          <a href="#" class="footer-link" style="font-size:12px;">Terms of Service</a>
+          <a href="#" class="footer-link" style="font-size:12px;">Sitemap</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ═══ SCHEMA MARKUP ═════════════════════════════════════════ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://theadventuresolutions.com/#org",
+        "name": "The Adventure Solutions",
+        "url": "https://theadventuresolutions.com",
+        "description": "Award-winning digital agency offering web design, development, SEO, digital marketing, multimedia production, and branding solutions for modern businesses.",
+        "foundingDate": "2016",
+        "areaServed": ["IN", "US", "GB", "AE"],
+        "sameAs": [
+          "https://linkedin.com/company/theadventuresolutions",
+          "https://instagram.com/theadventuresolutions",
+          "https://twitter.com/TAS_DM"
+        ],
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.9",
+          "ratingCount": "200",
+          "bestRating": "5"
+        },
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "Sales",
+          "email": "hello@theadventuresolutions.com",
+          "availableLanguage": ["English", "Tamil", "Hindi"]
+        }
+      },
+      {
+        "@type": "LocalBusiness",
+        "@id": "https://theadventuresolutions.com/#local",
+        "name": "The Adventure Solutions",
+        "image": "https://theadventuresolutions.com/og-image.jpg",
+        "description": "Premium digital agency — web design, development, SEO & marketing",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Your Street Address",
+          "addressLocality": "Chennai",
+          "addressRegion": "Tamil Nadu",
+          "postalCode": "600001",
+          "addressCountry": "IN"
+        },
+        "geo": { "@type": "GeoCoordinates", "latitude": "13.0827", "longitude": "80.2707" },
+        "telephone": "+91-XXXXXXXXXX",
+        "url": "https://theadventuresolutions.com",
+        "openingHoursSpecification": {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+          "opens": "09:00", "closes": "18:00"
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://theadventuresolutions.com/#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How long does a typical website project take?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Timelines vary by scope. A focused landing page takes 2–3 weeks. A full business website runs 4–8 weeks. Complex web applications or e-commerce platforms are typically 8–16 weeks." }
+          },
+          {
+            "@type": "Question",
+            "name": "What is your pricing structure?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Web design projects typically start at ₹50,000. Full website builds from ₹1.5L. SEO and marketing retainers from ₹25,000/month. We scope each project precisely — no surprises." }
+          },
+          {
+            "@type": "Question",
+            "name": "Do you provide ongoing support after launch?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes. All projects include a 30-day post-launch support window. We offer maintenance retainers covering updates, security patches, performance monitoring, and content changes." }
+          }
+        ]
+      },
+      {
+        "@type": "Service",
+        "@id": "https://theadventuresolutions.com/#services",
+        "provider": { "@id": "https://theadventuresolutions.com/#org" },
+        "serviceType": ["Web Design", "Web Development", "SEO", "Digital Marketing", "Branding", "Multimedia Production"],
+        "areaServed": "IN"
+      }
+    ]
+  }
+  </script>
+
+  <!-- ═══ SCRIPTS ════════════════════════════════════════════════ -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <script>
+  /* ═══════════════════════════════════════════════════════════════
+     LOADER — Particle → DV Logo Morph
+  ═══════════════════════════════════════════════════════════════ */
+  (function initLoader() {
+    const canvas = document.getElementById('loader-canvas');
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+    const bar = document.getElementById('loader-bar');
+
+    // Get DV text pixel positions
+    function getDVPositions() {
+      const off = document.createElement('canvas');
+      off.width = W; off.height = H;
+      const c = off.getContext('2d');
+      c.fillStyle = '#fff';
+      c.font = '900 140px Syne, Arial Black, sans-serif';
+      c.textAlign = 'center';
+      c.textBaseline = 'middle';
+      c.fillText('DV', W / 2, H / 2);
+      const d = c.getImageData(0, 0, W, H).data;
+      const pts = [];
+      for (let y = 0; y < H; y += 4) {
+        for (let x = 0; x < W; x += 4) {
+          if (d[(y * W + x) * 4 + 3] > 128) pts.push({ x, y });
+        }
+      }
+      return pts;
+    }
+
+    const dvPts = getDVPositions();
+    const N = Math.min(dvPts.length, 260);
+    const selectedPts = [];
+    const step = Math.floor(dvPts.length / N);
+    for (let i = 0; i < N; i++) selectedPts.push(dvPts[i * step]);
+
+    // Particles
+    const particles = selectedPts.map((pt, i) => ({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      tx: pt.x,
+      ty: pt.y,
+      size: Math.random() * 1.8 + 0.6,
+      hue: 210 + Math.random() * 40,
+      phase: Math.random() * Math.PI * 2,
+    }));
+
+    let progress = 0; // 0 → 1: scatter → DV
+    let logoGlow = 0;
+    let pulseR = 0;
+    let pulseAlpha = 0;
+    let done = false;
+    let startTime = performance.now();
+
+    function easeInOut(t) { return t < .5 ? 2*t*t : -1+(4-2*t)*t; }
+
+    function animate(now) {
+      if (done) return;
+      const elapsed = (now - startTime) / 1000; // seconds
+
+      // Update progress bar
+      const pct = Math.min(elapsed / 2.2, 1);
+      bar.style.width = (pct * 100) + '%';
+
+      ctx.clearRect(0, 0, W, H);
+
+      // Phase 1 (0-1.2s): particles converge to DV
+      if (elapsed < 1.2) {
+        progress = easeInOut(Math.min(elapsed / 1.2, 1));
+      } else if (elapsed < 2.2) {
+        progress = 1;
+        logoGlow = Math.min((elapsed - 1.2) / 0.5, 1);
+        if (elapsed > 1.7) {
+          pulseR = (elapsed - 1.7) * 600;
+          pulseAlpha = Math.max(0, 1 - (elapsed - 1.7) / 0.5);
+        }
+      } else {
+        done = true;
+        revealSite();
+        return;
+      }
+
+      // Draw pulse ring
+      if (pulseR > 0) {
+        ctx.beginPath();
+        ctx.arc(W/2, H/2, pulseR, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(0,212,255,${pulseAlpha * 0.6})`;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      }
+
+      // Glow behind DV when fully converged
+      if (logoGlow > 0) {
+        const grd = ctx.createRadialGradient(W/2, H/2, 0, W/2, H/2, 160);
+        grd.addColorStop(0, `rgba(0,87,255,${logoGlow * 0.25})`);
+        grd.addColorStop(1, `rgba(0,87,255,0)`);
+        ctx.fillStyle = grd;
+        ctx.fillRect(0, 0, W, H);
+      }
+
+      // Draw particles
+      particles.forEach((p, i) => {
+        const lx = p.x + (p.tx - p.x) * progress;
+        const ly = p.y + (p.ty - p.y) * progress;
+        const breathe = progress > 0.9 ? Math.sin(performance.now() * 0.003 + p.phase) * 1.5 : 0;
+        const glow = 0.6 + logoGlow * 0.4;
+
+        ctx.shadowBlur = 6 + logoGlow * 10;
+        ctx.shadowColor = `hsl(${p.hue}, 100%, 70%)`;
+        ctx.beginPath();
+        ctx.arc(lx + breathe * .5, ly + breathe * .3, p.size * (1 + logoGlow * .5), 0, Math.PI*2);
+        ctx.fillStyle = `hsla(${p.hue}, 100%, ${60 + logoGlow*20}%, ${glow})`;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      });
+
+      requestAnimationFrame(animate);
+    }
+
+    function revealSite() {
+      const loader = document.getElementById('loader');
+      gsap.to(loader, {
+        yPercent: -100,
+        duration: 0.7,
+        ease: 'expo.inOut',
+        delay: 0.1,
+        onComplete: () => { loader.style.display = 'none'; startHeroAnim(); }
+      });
+    }
+
+    requestAnimationFrame(animate);
+  })();
+
+  /* ═══════════════════════════════════════════════════════════════
+     THREE.JS HERO — Aurora Wave Mesh
+  ═══════════════════════════════════════════════════════════════ */
+  function initHeroGL() {
+    const canvas = document.getElementById('hero-canvas');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 0, 5);
+
+    const vertexShader = `
+      uniform float uTime;
+      uniform vec2 uMouse;
+      varying vec2 vUv;
+      varying float vZ;
+
+      void main() {
+        vUv = uv;
+        vec3 pos = position;
+        float freq = 1.2;
+        float amp = 0.18;
+
+        float wave = sin(pos.x * freq + uTime * 0.6) * amp
+                   + cos(pos.y * freq * 0.8 + uTime * 0.5) * amp * 0.7
+                   + sin((pos.x + pos.y) * freq * 0.5 + uTime * 0.4) * amp * 0.5;
+
+        float mDist = length(vec2(pos.x, pos.y) * 0.15 - uMouse * 2.5);
+        wave += exp(-mDist * mDist * 3.0) * 0.15;
+
+        pos.z += wave;
+        vZ = wave;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+      }
+    `;
+
+    const fragmentShader = `
+      uniform float uTime;
+      varying vec2 vUv;
+      varying float vZ;
+
+      void main() {
+        vec3 blue   = vec3(0.0, 0.337, 1.0);
+        vec3 cyan   = vec3(0.0, 0.831, 1.0);
+        vec3 violet = vec3(0.486, 0.361, 1.0);
+
+        float t = vUv.y * 0.6 + vZ * 2.5;
+        vec3 col = mix(blue, cyan, smoothstep(0.2, 0.8, t));
+        col = mix(col, violet, sin(uTime * 0.35 + vUv.x * 3.14159) * 0.35 + 0.25);
+
+        float a = 0.08 + abs(vZ) * 1.2;
+        gl_FragColor = vec4(col, clamp(a, 0.0, 0.22));
+      }
+    `;
+
+    const mat = new THREE.ShaderMaterial({
+      uniforms: {
+        uTime:  { value: 0 },
+        uMouse: { value: new THREE.Vector2(0, 0) },
+      },
+      vertexShader,
+      fragmentShader,
+      transparent: true,
+      side: THREE.DoubleSide,
+    });
+
+    const geo = new THREE.PlaneGeometry(12, 10, 100, 80);
+    const mesh = new THREE.Mesh(geo, mat);
+    mesh.rotation.x = -0.15;
+    scene.add(mesh);
+
+    const clock = new THREE.Clock();
+    function render() {
+      mat.uniforms.uTime.value = clock.getElapsedTime();
+      renderer.render(scene, camera);
+      requestAnimationFrame(render);
+    }
+    render();
+
+    // Mouse tracking
+    let mouseX = 0, mouseY = 0;
+    window.addEventListener('mousemove', e => {
+      mouseX += ((e.clientX / window.innerWidth) * 2 - 1 - mouseX) * 0.05;
+      mouseY += (-(e.clientY / window.innerHeight) * 2 + 1 - mouseY) * 0.05;
+      mat.uniforms.uMouse.value.set(mouseX, mouseY);
+    });
+
+    // Resize
+    window.addEventListener('resize', () => {
+      const W = window.innerWidth, H = window.innerHeight;
+      canvas.width = W; canvas.height = H;
+      renderer.setSize(W, H);
+      camera.aspect = W / H;
+      camera.updateProjectionMatrix();
+    });
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     HERO ENTRANCE ANIMATIONS
+  ═══════════════════════════════════════════════════════════════ */
+  function startHeroAnim() {
+    initHeroGL();
+    gsap.registerPlugin(ScrollTrigger);
+
+    const tl = gsap.timeline({ defaults: { ease: 'expo.out', duration: 0.9 } });
+    tl.from('#hero-badge',    { opacity: 0, y: 20, duration: 0.6 })
+      .from('#hero-h1',       { opacity: 0, y: 40, clipPath: 'inset(100% 0 0 0)' }, '-=0.2')
+      .from('#hero p',        { opacity: 0, y: 24 }, '-=0.5')
+      .from('#hero .btn',     { opacity: 0, y: 20, stagger: 0.1 }, '-=0.5')
+      .from('#hero [data-counter]', { opacity: 0, y: 20, stagger: 0.08 }, '-=0.4');
+
+    // Counter animation
+    document.querySelectorAll('[data-counter]').forEach(el => {
+      const target = parseInt(el.dataset.counter);
+      const suffix = el.parentElement.nextElementSibling?.textContent.includes('Yrs') ? 'Yrs' : '+';
+      let obj = { val: 0 };
+      gsap.to(obj, {
+        val: target, duration: 1.8, ease: 'power2.out', delay: 1.2,
+        onUpdate: () => { el.textContent = Math.floor(obj.val) + suffix; }
+      });
+    });
+
+    // Float cards entrance
+    gsap.from('.hero-float-card', { opacity: 0, scale: 0.8, duration: 0.6, stagger: 0.15, delay: 1.5, ease: 'back.out(1.4)' });
+
+    initScrollAnimations();
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     SCROLL REVEAL
+  ═══════════════════════════════════════════════════════════════ */
+  function initScrollAnimations() {
+    // Intersection Observer for data-reveal elements
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+
+    document.querySelectorAll('[data-reveal]').forEach((el, i) => {
+      const delay = parseFloat(el.style.animationDelay) || 0;
+      el.style.animationDelay = (delay) + 's';
+      observer.observe(el);
+    });
+
+    // Count-up for metric section
+    const countObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          const target = parseInt(el.dataset.countUp);
+          const suffix = el.dataset.suffix || '';
+          if (!el.dataset.noCount) {
+            let obj = { val: 0 };
+            gsap.to(obj, {
+              val: target, duration: 2, ease: 'power2.out',
+              onUpdate: () => { el.textContent = Math.floor(obj.val) + suffix; }
+            });
+          }
+          countObserver.unobserve(el);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    document.querySelectorAll('[data-count-up]').forEach(el => countObserver.observe(el));
+
+    // Nav scroll behavior
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     CUSTOM CURSOR
+  ═══════════════════════════════════════════════════════════════ */
+  (function initCursor() {
+    const ring = document.getElementById('cursor-ring');
+    const dot  = document.getElementById('cursor-dot');
+    if (!ring || !dot) return;
+
+    let rx = 0, ry = 0, dx = 0, dy = 0;
+
+    document.addEventListener('mousemove', e => {
+      dx = e.clientX; dy = e.clientY;
+      dot.style.transform = `translate(${dx}px, ${dy}px) translate(-50%, -50%)`;
+    });
+
+    function lerp(a, b, t) { return a + (b - a) * t; }
+
+    (function loop() {
+      rx = lerp(rx, dx, 0.12);
+      ry = lerp(ry, dy, 0.12);
+      ring.style.transform = `translate(${rx}px, ${ry}px) translate(-50%, -50%)`;
+      requestAnimationFrame(loop);
+    })();
+
+    // Hover state
+    document.querySelectorAll('a, button, [role="button"], .service-card, .portfolio-item').forEach(el => {
+      el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+      el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+    });
+  })();
+
+  /* ═══════════════════════════════════════════════════════════════
+     NAVIGATION
+  ═══════════════════════════════════════════════════════════════ */
+  document.getElementById('hamburger').addEventListener('click', () => {
+    document.getElementById('mobile-menu').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  });
+  document.getElementById('mobile-close').addEventListener('click', closeMenu);
+  document.querySelectorAll('.mobile-nav-link').forEach(l => l.addEventListener('click', closeMenu));
+  function closeMenu() {
+    document.getElementById('mobile-menu').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     SERVICE CARD TOGGLE
+  ═══════════════════════════════════════════════════════════════ */
+  function toggleService(card) {
+    const wasActive = card.classList.contains('active');
+    document.querySelectorAll('.service-card.active').forEach(c => {
+      c.classList.remove('active');
+      c.setAttribute('aria-expanded', 'false');
+      const arrow = c.querySelector('.service-arrow');
+      if (arrow) arrow.style.transform = '';
+    });
+    if (!wasActive) {
+      card.classList.add('active');
+      card.setAttribute('aria-expanded', 'true');
+      const arrow = card.querySelector('.service-arrow');
+      if (arrow) arrow.style.transform = 'rotate(0deg)';
+    }
+  }
+
+  // Keyboard support for service cards
+  document.querySelectorAll('.service-card').forEach(card => {
+    card.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleService(card); }
+    });
+  });
+
+  /* ═══════════════════════════════════════════════════════════════
+     PORTFOLIO FILTER
+  ═══════════════════════════════════════════════════════════════ */
+  function filterPortfolio(category, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const items = document.querySelectorAll('.portfolio-item');
+    items.forEach(item => {
+      const cat = item.dataset.category;
+      const show = category === 'all' || cat === category;
+      if (show) {
+        item.classList.remove('hidden');
+        gsap.from(item, { opacity: 0, scale: 0.94, duration: 0.35, ease: 'back.out(1.2)' });
+      } else {
+        item.classList.add('hidden');
+      }
+    });
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     FAQ ACCORDION
+  ═══════════════════════════════════════════════════════════════ */
+  function toggleFaq(btn) {
+    const body = btn.nextElementSibling;
+    const expanded = btn.getAttribute('aria-expanded') === 'true';
+
+    // Close all
+    document.querySelectorAll('.faq-trigger[aria-expanded="true"]').forEach(b => {
+      b.setAttribute('aria-expanded', 'false');
+      b.nextElementSibling.classList.remove('open');
+    });
+
+    if (!expanded) {
+      btn.setAttribute('aria-expanded', 'true');
+      body.classList.add('open');
+    }
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     MULTI-STEP FORM
+  ═══════════════════════════════════════════════════════════════ */
+  let currentStep = 1;
+
+  function showStep(n) {
+    document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
+    const step = document.getElementById(`fstep-${n}`);
+    if (step) { step.classList.add('active'); currentStep = n; }
+
+    // Update bubbles
+    ['s1b','s2b','s3b'].forEach((id, i) => {
+      const bub = document.getElementById(id);
+      if (!bub) return;
+      if (i + 1 < n) bub.className = 'step-bubble done';
+      else if (i + 1 === n) bub.className = 'step-bubble active';
+      else bub.className = 'step-bubble pending';
+    });
+  }
+
+  function nextFormStep(from) {
+    // Basic validation
+    let valid = true;
+    const step = document.getElementById(`fstep-${from}`);
+    step.querySelectorAll('[required]').forEach(field => {
+      if (!field.value.trim()) {
+        valid = false;
+        field.style.borderColor = '#EF4444';
+        field.addEventListener('input', () => field.style.borderColor = '', { once: true });
+      }
+    });
+    if (valid) showStep(from + 1);
+  }
+
+  function prevFormStep(from) { showStep(from - 1); }
+
+  function styleServiceCheck(cb) {
+    const label = cb.closest('label');
+    label.style.borderColor = cb.checked ? 'var(--blue)' : 'rgba(0,87,255,.15)';
+    label.style.background = cb.checked ? 'rgba(0,87,255,.05)' : '';
+  }
+
+  document.getElementById('contact-form').addEventListener('submit', e => {
+    e.preventDefault();
+    showStep('success');
+    // Confetti-style pulse
+    const btn = document.getElementById('submit-btn');
+    if (btn) gsap.to(btn, { scale: 1.05, yoyo: true, repeat: 1, duration: 0.15 });
+  });
+
+  /* ═══════════════════════════════════════════════════════════════
+     NEWSLETTER
+  ═══════════════════════════════════════════════════════════════ */
+  function subscribeNewsletter(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('button');
+    const input = e.target.querySelector('input');
+    btn.textContent = '✓';
+    btn.style.background = '#10B981';
+    input.value = '';
+    setTimeout(() => { btn.textContent = '→'; btn.style.background = ''; }, 2000);
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     SMOOTH SCROLL for NAV LINKS
+  ═══════════════════════════════════════════════════════════════ */
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        const top = target.getBoundingClientRect().top + window.scrollY - 80;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+    });
+  });
+
+  /* ═══════════════════════════════════════════════════════════════
+     RESPONSIVE GRID HELPER
+  ═══════════════════════════════════════════════════════════════ */
+  function applyResponsiveGrids() {
+    const w = window.innerWidth;
+    document.querySelectorAll('.max-md\\:grid-cols-1').forEach(el => {
+      if (w < 900) el.style.gridTemplateColumns = '1fr';
+      else el.style.gridTemplateColumns = '';
+    });
+    document.querySelectorAll('.max-md\\:grid-cols-2').forEach(el => {
+      if (w < 600) el.style.gridTemplateColumns = '1fr';
+      else if (w < 900) el.style.gridTemplateColumns = 'repeat(2,1fr)';
+      else el.style.gridTemplateColumns = '';
+    });
+  }
+  window.addEventListener('resize', applyResponsiveGrids);
+  applyResponsiveGrids();
+
+  /* prefers-reduced-motion */
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelectorAll('[data-reveal]').forEach(el => el.classList.add('in-view'));
+  }
+  </script>
+</body>
+</html>
